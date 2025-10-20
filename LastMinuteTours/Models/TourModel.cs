@@ -48,7 +48,7 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Доплаты (руб)
         /// </summary>
-        [Range(0.01, 100000, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
+        [Range(0.00, 100000, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
         public decimal Surcharges { get; set; }
 
         /// <summary>
