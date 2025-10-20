@@ -5,8 +5,13 @@ namespace LastMinuteTours.Models
     /// <summary>
     /// Модель тура
     /// </summary>
-    internal class TourModel
+    public class TourModel
     {
+        /// <summary>
+        /// Индентификатор тура
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <inheritdoc cref="Models.Direction"/>
         public Direction Direction { get; set; }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// Направление тура
     /// </summary>
-    internal enum Direction: Byte
+    public enum Direction: Byte
     {
         /// <summary>
         /// Неизвестно

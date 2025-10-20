@@ -1,4 +1,5 @@
-﻿using LastMinuteTours.Models;
+﻿using LastMinuteTours.Forms;
+using LastMinuteTours.Models;
 using System.Windows.Forms;
 
 namespace LastMinuteTours
@@ -13,6 +14,7 @@ namespace LastMinuteTours
             items = new List<TourModel>();
             items.Add(new TourModel
             {
+                Id = Guid.NewGuid(),
                 Direction = Models.Direction.Turkey,
                 DepartureDate = DateOnly.Parse("20.10.2025"),
                 NumberNights = 5,
@@ -24,6 +26,7 @@ namespace LastMinuteTours
 
             items.Add(new TourModel
             {
+                Id = Guid.NewGuid(),
                 Direction = Models.Direction.Spain,
                 DepartureDate = DateOnly.Parse("15.11.2025"),
                 NumberNights = 7,
@@ -35,6 +38,7 @@ namespace LastMinuteTours
 
             items.Add(new TourModel
             {
+                Id = Guid.NewGuid(),
                 Direction = Models.Direction.Italy,
                 DepartureDate = DateOnly.Parse("05.12.2025"),
                 NumberNights = 6,
@@ -46,6 +50,7 @@ namespace LastMinuteTours
 
             items.Add(new TourModel
             {
+                Id = Guid.NewGuid(),
                 Direction = Models.Direction.France,
                 DepartureDate = DateOnly.Parse("12.01.2026"),
                 NumberNights = 8,
@@ -57,6 +62,7 @@ namespace LastMinuteTours
 
             items.Add(new TourModel
             {
+                Id = Guid.NewGuid(),
                 Direction = Models.Direction.Shushary,
                 DepartureDate = DateOnly.Parse("25.10.2025"),
                 NumberNights = 2,
@@ -125,15 +131,70 @@ namespace LastMinuteTours
 
         private void SetStatistics()
         {
-            //общее кол-во туров,
-            //общую сумму за все туры,
-            //количество туров с доплатами
-            //общую сумму доплат
-
             toolStrpLblTotalTours.Text = $"Общее кол-во туров: {items.Count}";
             toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {items.Sum(t => t.TotalCost)} руб.";
             toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {items.Count(t => t.Surcharges > 0)}";
             toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {items.Sum(t => t.Surcharges)}";
+        }
+
+        private void tlStrpBtnAdd_Click(object sender, EventArgs e)
+        {
+            var addForm = new TourForm();
+            if (addForm.ShowDialog(this) == DialogResult.OK)
+            {
+                items.Add(addForm.CurrentTour);
+                bindingSource.ResetBindings(false);
+                SetStatistics();
+            }
+        }
+
+        private void tlStrpBtnEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTours.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem;
+
+            var editForm = new TourForm(tour);
+            if (editForm.ShowDialog(this) == DialogResult.OK)
+            {
+                var selectedTour = items.FirstOrDefault(x => x.Id == editForm.CurrentTour.Id);
+                if (selectedTour != null)
+                {
+                    selectedTour.Direction = editForm.CurrentTour.Direction;
+                    selectedTour.DepartureDate = editForm.CurrentTour.DepartureDate;
+                    selectedTour.NumberNights = editForm.CurrentTour.NumberNights;
+                    selectedTour.CostPerVacationer = editForm.CurrentTour.CostPerVacationer;
+                    selectedTour.NumberVacationers = editForm.CurrentTour.NumberVacationers;
+                    selectedTour.AvailabilityWiFi = editForm.CurrentTour.AvailabilityWiFi;
+                    selectedTour.Surcharges = editForm.CurrentTour.Surcharges;
+                    bindingSource.ResetBindings(false);
+                    SetStatistics();
+                }
+            }
+        }
+
+        private void tlStrpBtnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTours.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem;
+            var selectedTour = items.FirstOrDefault(x => x.Id == tour.Id);
+            if (selectedTour != null &&
+                MessageBox.Show($"Удалить тур '{tour.Direction}'?", 
+                "Удаление тура", 
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                items.Remove(selectedTour);
+                bindingSource.ResetBindings(false );
+                SetStatistics();
+            }
         }
     }
 }

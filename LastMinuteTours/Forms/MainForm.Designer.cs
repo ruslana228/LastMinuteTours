@@ -171,6 +171,7 @@
             tlStrpBtnAdd.Name = "tlStrpBtnAdd";
             tlStrpBtnAdd.Size = new Size(23, 22);
             tlStrpBtnAdd.Text = "Добавить ";
+            tlStrpBtnAdd.Click += tlStrpBtnAdd_Click;
             // 
             // tlStrpBtnEdit
             // 
@@ -180,6 +181,7 @@
             tlStrpBtnEdit.Name = "tlStrpBtnEdit";
             tlStrpBtnEdit.Size = new Size(23, 22);
             tlStrpBtnEdit.Text = "Редактировать";
+            tlStrpBtnEdit.Click += tlStrpBtnEdit_Click;
             // 
             // tlStrpBtnDelete
             // 
@@ -189,6 +191,7 @@
             tlStrpBtnDelete.Name = "tlStrpBtnDelete";
             tlStrpBtnDelete.Size = new Size(23, 22);
             tlStrpBtnDelete.Text = "Удалить";
+            tlStrpBtnDelete.Click += tlStrpBtnDelete_Click;
             // 
             // MainForm
             // 
@@ -199,7 +202,10 @@
             Controls.Add(toolStrip1);
             Controls.Add(statusStripRegistry);
             Controls.Add(dataGridViewTours);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Реестр туров";
             ((System.ComponentModel.ISupportInitialize)dataGridViewTours).EndInit();
             statusStripRegistry.ResumeLayout(false);
