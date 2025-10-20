@@ -4,14 +4,30 @@ using System.Windows.Forms;
 
 namespace LastMinuteTours
 {
+    /// <summary>
+    /// Главная форма приложения для управления турами
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Коллекция туров, используемая в качестве источника данных
+        /// </summary>
         private readonly List<TourModel> items;
+
+        /// <summary>
+        /// Компонент для привязки данных между коллекцией и DataGridView
+        /// </summary>
         private readonly BindingSource bindingSource = new();
 
+        /// <summary>
+        /// Конструктор главной формы
+        /// </summary>
         public MainForm()
         {
+            // Инициализация коллекции
             items = new List<TourModel>();
+
+            // Добавление туров
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
@@ -71,30 +87,38 @@ namespace LastMinuteTours
                 AvailabilityWiFi = false,
                 Surcharges = 500.00m,
             });
+
             InitializeComponent();
-            dataGridViewTours.AutoGenerateColumns = false;
 
-            bindingSource.DataSource = items;
-            dataGridViewTours.DataSource = bindingSource;
+            dataGridViewTours.AutoGenerateColumns = false; // Отключение автоматического создания колонок
 
-            SetStatistics();
+            bindingSource.DataSource = items; // Настройка привязки данных: связываем источник данных с BindingSource
+            dataGridViewTours.DataSource = bindingSource; // Связывание BindingSource с DataGridView для отображения данных
+
+            SetStatistics(); // Обновление статистики
         }
 
+        /// <summary>
+        /// Обработчик события форматирования ячеек DataGridView
+        /// </summary>
         private void dataGridViewTours_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // Проверяем, что это не заголовок и строка существует
+            // Проверка, что это не заголовок и строка существует
+            // Заголовки имеют RowIndex = -1, поэтому их пропускаем
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
 
+            // Получение ссылок на колонку и строку для которой происходит форматирование
             var col = dataGridViewTours.Columns[e.ColumnIndex];
             var row = dataGridViewTours.Rows[e.RowIndex];
 
-            // Проверяем, что DataBoundItem не null
+            // Проверка, что строка содержит данные
             if (row.DataBoundItem == null)
                 return;
 
-            var tour = (TourModel)dataGridViewTours.Rows[e.RowIndex].DataBoundItem;
+            var tour = (TourModel)dataGridViewTours.Rows[e.RowIndex].DataBoundItem; // Получение объекта тура, привязанного к текущей строке
 
+            // Форматирование колонки "Направление" - преобразование enum в читаемый текст
             if (col.DataPropertyName == nameof(TourModel.Direction))
             {
                 switch (tour.Direction)
@@ -120,15 +144,18 @@ namespace LastMinuteTours
                 }
             }
 
+            // Форматирование колонки "Наличие Wi-Fi" - преобразование bool в "Да"/"Нет"
             if (col.DataPropertyName == nameof(TourModel.AvailabilityWiFi))
             {
                 e.Value = tour.AvailabilityWiFi
-                    ? "Да"
-                    : "Нет";
+                    ? "Да" // Если Wi-Fi есть
+                    : "Нет"; // Если Wi-Fi нет
             }
         }
 
-
+        /// <summary>
+        /// Метод для вычисления и отображения общих показателей по всем турам
+        /// </summary>
         private void SetStatistics()
         {
             toolStrpLblTotalTours.Text = $"Общее кол-во туров: {items.Count}";
@@ -137,32 +164,42 @@ namespace LastMinuteTours
             toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {items.Sum(t => t.Surcharges)}";
         }
 
+        /// <summary>
+        /// Обработчик клика по кнопке "Добавить" - добавление нового тура
+        /// </summary>
         private void tlStrpBtnAdd_Click(object sender, EventArgs e)
         {
-            var addForm = new TourForm();
+            var addForm = new TourForm(); // Создание новой формы для добавления тура
+
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                items.Add(addForm.CurrentTour);
-                bindingSource.ResetBindings(false);
-                SetStatistics();
+                items.Add(addForm.CurrentTour); // Добавление тура в коллекцию
+
+                bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
+                SetStatistics(); // Обновление статистики с учетом нового тура
             }
         }
 
+        /// <summary>
+        /// Обработчик клика по кнопке "Редактировать" - редактирование туров
+        /// </summary>
         private void tlStrpBtnEdit_Click(object sender, EventArgs e)
         {
+            // Проверка, что пользователь выбрал строку для редактирования
             if (dataGridViewTours.SelectedRows.Count == 0)
             {
                 return;
             }
 
-            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem;
+            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem; // Получение выбранного тура из привязанных данных выбранной строки
 
             var editForm = new TourForm(tour);
             if (editForm.ShowDialog(this) == DialogResult.OK)
             {
-                var selectedTour = items.FirstOrDefault(x => x.Id == editForm.CurrentTour.Id);
+                var selectedTour = items.FirstOrDefault(x => x.Id == editForm.CurrentTour.Id); // Поиск тура в коллекции по идентификатору
                 if (selectedTour != null)
                 {
+                    // Обновление свойств выбранного тура данными из формы редактирования
                     selectedTour.Direction = editForm.CurrentTour.Direction;
                     selectedTour.DepartureDate = editForm.CurrentTour.DepartureDate;
                     selectedTour.NumberNights = editForm.CurrentTour.NumberNights;
@@ -170,30 +207,38 @@ namespace LastMinuteTours
                     selectedTour.NumberVacationers = editForm.CurrentTour.NumberVacationers;
                     selectedTour.AvailabilityWiFi = editForm.CurrentTour.AvailabilityWiFi;
                     selectedTour.Surcharges = editForm.CurrentTour.Surcharges;
-                    bindingSource.ResetBindings(false);
-                    SetStatistics();
+
+                    bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
+                    SetStatistics(); // Обновление статистики с учетом нового тура
                 }
             }
         }
 
+        /// <summary>
+        /// Обработчик клика по кнопке "Удалить" - удаление тура
+        /// </summary>
         private void tlStrpBtnDelete_Click(object sender, EventArgs e)
         {
+            // Проверка, что пользователь выбрал строку для редактирования
             if (dataGridViewTours.SelectedRows.Count == 0)
             {
                 return;
             }
 
-            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem;
-            var selectedTour = items.FirstOrDefault(x => x.Id == tour.Id);
+            var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem; // Получение выбранного тура из привязанных данных выбранной строки
+            var selectedTour = items.FirstOrDefault(x => x.Id == tour.Id); // Поиск тура в коллекции по идентификатору
+            
+            // Проверка, что тур найден и получение подтверждение удаления
             if (selectedTour != null &&
-                MessageBox.Show($"Удалить тур '{tour.Direction}'?", 
-                "Удаление тура", 
+                MessageBox.Show($"Удалить тур '{tour.Direction}'?",
+                "Удаление тура",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                items.Remove(selectedTour);
-                bindingSource.ResetBindings(false );
-                SetStatistics();
+                items.Remove(selectedTour); // Удаление тура из коллекции
+
+                bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
+                SetStatistics(); // Обновление статистики с учетом нового тура
             }
         }
     }

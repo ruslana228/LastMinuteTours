@@ -1,4 +1,5 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LastMinuteTours.Models
 {
@@ -13,6 +14,7 @@ namespace LastMinuteTours.Models
         public Guid Id { get; set; }
 
         /// <inheritdoc cref="Models.Direction"/>
+        [Required(ErrorMessage = "Выберите направление тура")]
         public Direction Direction { get; set; }
 
         /// <summary>
@@ -23,16 +25,19 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Количество ночей
         /// </summary>
+        [Range(1, 30, ErrorMessage = "Кол-во ночей должно быть от 1 до 30")]
         public int NumberNights { get; set; }
 
         /// <summary>
         /// Стоимость за отдыхающего (руб)
         /// </summary>
+        [Range(0.01, 100000, ErrorMessage = "Стоимость должна быть в диапазоне от 0 до 100000")]
         public decimal CostPerVacationer { get; set; }
 
         /// <summary>
         /// Количество отдыхающих
         /// </summary>
+        [Range(1, 10, ErrorMessage = "Кол-во отдыхающих должно быть от 1 до 10")]
         public int NumberVacationers { get; set; }
 
         /// <summary>
@@ -43,14 +48,12 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Доплаты (руб)
         /// </summary>
+        [Range(0.01, 100000, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
         public decimal Surcharges { get; set; }
 
         /// <summary>
         /// Общая стоимость
         /// </summary>
-        public decimal TotalCost 
-        { 
-            get { return (CostPerVacationer * NumberVacationers) + Surcharges; }
-        }
+        public decimal TotalCost => (CostPerVacationer * NumberVacationers) + Surcharges;
     }
 }

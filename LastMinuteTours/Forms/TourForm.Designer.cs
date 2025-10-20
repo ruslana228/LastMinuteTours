@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             labelDirection = new Label();
             textBoxCostPerVacationer = new TextBox();
             comboBoxDirection = new ComboBox();
@@ -43,8 +44,10 @@
             checkBoxAvailabilityWiFiYes = new CheckBox();
             buttonSave = new Button();
             buttonCancel = new Button();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberVacationers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberNights).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // labelDirection
@@ -65,6 +68,7 @@
             textBoxCostPerVacationer.Name = "textBoxCostPerVacationer";
             textBoxCostPerVacationer.Size = new Size(213, 27);
             textBoxCostPerVacationer.TabIndex = 1;
+            textBoxCostPerVacationer.Validating += textBoxCostPerVacationer_Validating;
             // 
             // comboBoxDirection
             // 
@@ -74,6 +78,7 @@
             comboBoxDirection.Name = "comboBoxDirection";
             comboBoxDirection.Size = new Size(213, 28);
             comboBoxDirection.TabIndex = 2;
+            comboBoxDirection.Validating += comboBoxDirection_Validating;
             // 
             // labelDepartureDate
             // 
@@ -137,6 +142,7 @@
             numericUpDownNumberVacationers.Name = "numericUpDownNumberVacationers";
             numericUpDownNumberVacationers.Size = new Size(114, 27);
             numericUpDownNumberVacationers.TabIndex = 9;
+            numericUpDownNumberVacationers.Validating += numericUpDownNumberVacationers_Validating;
             // 
             // textBoxSurcharges
             // 
@@ -145,6 +151,7 @@
             textBoxSurcharges.Name = "textBoxSurcharges";
             textBoxSurcharges.Size = new Size(213, 27);
             textBoxSurcharges.TabIndex = 10;
+            textBoxSurcharges.Validating += textBoxSurcharges_Validating;
             // 
             // numericUpDownNumberNights
             // 
@@ -153,6 +160,7 @@
             numericUpDownNumberNights.Name = "numericUpDownNumberNights";
             numericUpDownNumberNights.Size = new Size(114, 27);
             numericUpDownNumberNights.TabIndex = 11;
+            numericUpDownNumberNights.Validating += numericUpDownNumberNights_Validating;
             // 
             // dateTimePickerDepartureDate
             // 
@@ -162,6 +170,7 @@
             dateTimePickerDepartureDate.Name = "dateTimePickerDepartureDate";
             dateTimePickerDepartureDate.Size = new Size(213, 27);
             dateTimePickerDepartureDate.TabIndex = 12;
+            dateTimePickerDepartureDate.Validating += dateTimePickerDepartureDate_Validating;
             // 
             // checkBoxAvailabilityWiFiYes
             // 
@@ -197,6 +206,10 @@
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // TourForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -225,6 +238,7 @@
             Text = "Параметры тура";
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberVacationers).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberNights).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -246,5 +260,6 @@
         private CheckBox checkBoxAvailabilityWiFiYes;
         private Button buttonSave;
         private Button buttonCancel;
+        private ErrorProvider errorProvider1;
     }
 }
