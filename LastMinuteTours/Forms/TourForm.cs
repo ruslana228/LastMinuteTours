@@ -62,7 +62,7 @@ namespace LastMinuteTours.Forms
             dateTimePickerDepartureDate.DataBindings.Add(dateTimePickerBinding);
 
             // Привязка с errorProvider
-            comboBoxDirection.AddBinding(x => x.SelectedItem, targetTour, x => x.Direction);
+            comboBoxDirection.AddBinding(x => x.SelectedItem, targetTour, x => x.Direction, errorProvider1);
             numericUpDownNumberNights.AddBinding(x => x.Value, targetTour, x => x.NumberNights, errorProvider1);
             textBoxCostPerVacationer.AddBinding(x => x.Text, targetTour, x => x.CostPerVacationer, errorProvider1);
             numericUpDownNumberVacationers.AddBinding(x => x.Value, targetTour, x => x.NumberVacationers, errorProvider1);

@@ -13,12 +13,12 @@ namespace LastMinuteTours.Infrostructure
         /// Метод для создания привязки данных между свойством контрола и свойством источника данных
         /// </summary>
         public static void AddBinding<TControl, TSource>(this TControl control,
-    Expression<Func<TControl, object>> destinationProperty,
-    TSource source,
-    Expression<Func<TSource, object>> sourceProperty,
-    ErrorProvider? errorProvider = null)
-    where TControl : Control
-    where TSource : class
+        Expression<Func<TControl, object>> destinationProperty,
+        TSource source,
+        Expression<Func<TSource, object>> sourceProperty,
+        ErrorProvider? errorProvider = null)
+        where TControl : Control
+        where TSource : class
         {
 
             var destinationPropertyName = GetPropertyName(destinationProperty); // Получаем имя свойства контрола
