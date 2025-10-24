@@ -53,12 +53,16 @@
             // 
             // dataGridViewTours
             // 
+            dataGridViewTours.AllowUserToAddRows = false;
+            dataGridViewTours.AllowUserToDeleteRows = false;
             dataGridViewTours.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewTours.BackgroundColor = Color.DarkOliveGreen;
             dataGridViewTours.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewTours.Columns.AddRange(new DataGridViewColumn[] { DGDirection, DGDepartureDate, DGNumberNights, DGCostPerVacationer, DGNumberVacationers, DGAvailabilityWiFi, DGSurcharges, DGTotalCost });
             dataGridViewTours.Location = new Point(0, 28);
+            dataGridViewTours.MultiSelect = false;
             dataGridViewTours.Name = "dataGridViewTours";
+            dataGridViewTours.ReadOnly = true;
             dataGridViewTours.Size = new Size(851, 397);
             dataGridViewTours.TabIndex = 0;
             dataGridViewTours.CellFormatting += dataGridViewTours_CellFormatting;
@@ -68,48 +72,56 @@
             DGDirection.DataPropertyName = "Direction";
             DGDirection.HeaderText = "Направление ";
             DGDirection.Name = "DGDirection";
+            DGDirection.ReadOnly = true;
             // 
             // DGDepartureDate
             // 
             DGDepartureDate.DataPropertyName = "DepartureDate";
             DGDepartureDate.HeaderText = "Дата вылета";
             DGDepartureDate.Name = "DGDepartureDate";
+            DGDepartureDate.ReadOnly = true;
             // 
             // DGNumberNights
             // 
             DGNumberNights.DataPropertyName = "NumberNights";
             DGNumberNights.HeaderText = "Количество ночей";
             DGNumberNights.Name = "DGNumberNights";
+            DGNumberNights.ReadOnly = true;
             // 
             // DGCostPerVacationer
             // 
             DGCostPerVacationer.DataPropertyName = "CostPerVacationer";
             DGCostPerVacationer.HeaderText = "Стоимость за отдыхающего (руб)";
             DGCostPerVacationer.Name = "DGCostPerVacationer";
+            DGCostPerVacationer.ReadOnly = true;
             // 
             // DGNumberVacationers
             // 
             DGNumberVacationers.DataPropertyName = "NumberVacationers";
             DGNumberVacationers.HeaderText = "Количество отдыхающих";
             DGNumberVacationers.Name = "DGNumberVacationers";
+            DGNumberVacationers.ReadOnly = true;
             // 
             // DGAvailabilityWiFi
             // 
             DGAvailabilityWiFi.DataPropertyName = "AvailabilityWiFi";
             DGAvailabilityWiFi.HeaderText = "Наличие Wi-Fi";
             DGAvailabilityWiFi.Name = "DGAvailabilityWiFi";
+            DGAvailabilityWiFi.ReadOnly = true;
             // 
             // DGSurcharges
             // 
             DGSurcharges.DataPropertyName = "Surcharges";
             DGSurcharges.HeaderText = "Доплаты (руб)";
             DGSurcharges.Name = "DGSurcharges";
+            DGSurcharges.ReadOnly = true;
             // 
             // DGTotalCost
             // 
             DGTotalCost.DataPropertyName = "TotalCost";
             DGTotalCost.HeaderText = "Общая стоимость";
             DGTotalCost.Name = "DGTotalCost";
+            DGTotalCost.ReadOnly = true;
             // 
             // statusStripRegistry
             // 

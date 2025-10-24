@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace LastMinuteTours.Infrostructure
 {
@@ -13,15 +12,15 @@ namespace LastMinuteTours.Infrostructure
         /// <summary>
         /// Метод для создания привязки данных между свойством контрола и свойством источника данных
         /// </summary>
-        public static void AddBinding<TControl, TSource>(this TControl control, 
-            Expression<Func<TControl, object>> destinationProperty,
-            TSource source,
-            Expression<Func<TSource, object>> sourceProperty,
-            ErrorProvider? errorProvider = null)
-            where TControl : Control
-            where TSource : class
+        public static void AddBinding<TControl, TSource>(this TControl control,
+    Expression<Func<TControl, object>> destinationProperty,
+    TSource source,
+    Expression<Func<TSource, object>> sourceProperty,
+    ErrorProvider? errorProvider = null)
+    where TControl : Control
+    where TSource : class
         {
-            
+
             var destinationPropertyName = GetPropertyName(destinationProperty); // Получаем имя свойства контрола
             var sourcePropertyName = GetPropertyName(sourceProperty); // Получаем имя свойства модели
 
@@ -36,20 +35,18 @@ namespace LastMinuteTours.Infrostructure
                 {
                     ValidateControl(control, source, sourcePropertyName, errorProvider);
                 };
-
-                // Обработчик изменения текста для TextBox
-                if (control is TextBox textBox)
+                // Проверка для NumericUpDown
+                if (control is NumericUpDown num)
                 {
-                    textBox.TextChanged += (sender, e) =>
+                    num.ValueChanged += (sender, e) =>
                     {
                         ValidateControl(control, source, sourcePropertyName, errorProvider);
                     };
                 }
-
-                // Обработчик изменения значения для NumericUpDown
-                if (control is NumericUpDown numericUpDown)
+                // Проверка для ComboBox
+                if (control is ComboBox combo)
                 {
-                    numericUpDown.ValueChanged += (sender, e) =>
+                    combo.SelectedIndexChanged += (sender, e) =>
                     {
                         ValidateControl(control, source, sourcePropertyName, errorProvider);
                     };
@@ -117,7 +114,6 @@ namespace LastMinuteTours.Infrostructure
             // Создание контекста валидации
             var context = new ValidationContext(obj);
             var results = new List<ValidationResult>();
-
             return Validator.TryValidateObject(obj, context, results, true); // Возвращение результата валидации
         }
     }

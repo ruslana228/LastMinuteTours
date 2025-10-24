@@ -8,31 +8,31 @@
         /// <summary>
         /// Неизвестно
         /// </summary>
-        Unknown = 0,
+        Unknown,
 
         /// <summary>
         /// Турция
         /// </summary>
-        Turkey = 1,
+        Turkey,
 
         /// <summary>
         /// Испания
         /// </summary>
-        Spain = 2,
+        Spain,
 
         /// <summary>
         /// Италия
         /// </summary>
-        Italy = 3,
+        Italy,
 
         /// <summary>
         /// Франция
         /// </summary>
-        France = 4,
+        France,
 
         /// <summary>
         /// Шушары
         /// </summary>
-        Shushary = 5
+        Shushary
     }
 }

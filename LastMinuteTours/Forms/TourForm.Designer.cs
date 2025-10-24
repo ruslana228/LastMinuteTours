@@ -68,17 +68,16 @@
             textBoxCostPerVacationer.Name = "textBoxCostPerVacationer";
             textBoxCostPerVacationer.Size = new Size(213, 27);
             textBoxCostPerVacationer.TabIndex = 1;
-            textBoxCostPerVacationer.Validating += textBoxCostPerVacationer_Validating;
             // 
             // comboBoxDirection
             // 
+            comboBoxDirection.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxDirection.Font = new Font("Segoe UI", 11.25F);
             comboBoxDirection.FormattingEnabled = true;
             comboBoxDirection.Location = new Point(206, 59);
             comboBoxDirection.Name = "comboBoxDirection";
             comboBoxDirection.Size = new Size(213, 28);
             comboBoxDirection.TabIndex = 2;
-            comboBoxDirection.Validating += comboBoxDirection_Validating;
             // 
             // labelDepartureDate
             // 
@@ -142,7 +141,6 @@
             numericUpDownNumberVacationers.Name = "numericUpDownNumberVacationers";
             numericUpDownNumberVacationers.Size = new Size(114, 27);
             numericUpDownNumberVacationers.TabIndex = 9;
-            numericUpDownNumberVacationers.Validating += numericUpDownNumberVacationers_Validating;
             // 
             // textBoxSurcharges
             // 
@@ -151,7 +149,6 @@
             textBoxSurcharges.Name = "textBoxSurcharges";
             textBoxSurcharges.Size = new Size(213, 27);
             textBoxSurcharges.TabIndex = 10;
-            textBoxSurcharges.Validating += textBoxSurcharges_Validating;
             // 
             // numericUpDownNumberNights
             // 
@@ -160,7 +157,6 @@
             numericUpDownNumberNights.Name = "numericUpDownNumberNights";
             numericUpDownNumberNights.Size = new Size(114, 27);
             numericUpDownNumberNights.TabIndex = 11;
-            numericUpDownNumberNights.Validating += numericUpDownNumberNights_Validating;
             // 
             // dateTimePickerDepartureDate
             // 
@@ -170,7 +166,6 @@
             dateTimePickerDepartureDate.Name = "dateTimePickerDepartureDate";
             dateTimePickerDepartureDate.Size = new Size(213, 27);
             dateTimePickerDepartureDate.TabIndex = 12;
-            dateTimePickerDepartureDate.Validating += dateTimePickerDepartureDate_Validating;
             // 
             // checkBoxAvailabilityWiFiYes
             // 

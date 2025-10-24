@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using LastMinuteTours.Infrostructure;
+﻿using LastMinuteTours.Infrostructure;
 using LastMinuteTours.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace LastMinuteTours.Forms
 {
@@ -68,12 +68,6 @@ namespace LastMinuteTours.Forms
             numericUpDownNumberVacationers.AddBinding(x => x.Value, targetTour, x => x.NumberVacationers, errorProvider1);
             textBoxSurcharges.AddBinding(x => x.Text, targetTour, x => x.Surcharges, errorProvider1);
             checkBoxAvailabilityWiFiYes.AddBinding(x => x.Checked, targetTour, x => x.AvailabilityWiFi);
-
-            // Обработчик изменения направления для валидации
-            comboBoxDirection.SelectedIndexChanged += (s, e) => ValidateForm();
-
-            // Изначально блокируем кнопку сохранения
-            UpdateSaveButtonState();
         }
 
         /// <summary>
@@ -106,20 +100,60 @@ namespace LastMinuteTours.Forms
         /// </summary>
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            // Принудительно вызываем валидацию всех контролов
-            ValidateChildren(ValidationConstraints.Enabled);
+            // Очищаем все предыдущие ошибки
+            errorProvider1.Clear();
 
-            // Проверка валидности всей модели данных
-            if (!targetTour.IsValid())
+            // Создаем контекст валидации для целевого тура
+            var context = new ValidationContext(targetTour);
+            var results = new List<ValidationResult>();
+
+            // Выполняем валидацию всего объекта
+            var isValid = Validator.TryValidateObject(targetTour, context, results, true);
+
+            // Дополнительная проверка направления (не должно быть Unknown)
+            if (targetTour.Direction == Direction.Unknown)
             {
-                MessageBox.Show("Исправьте ошибки в форме перед сохранением.", "Ошибка валидации",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                isValid = false;
+                results.Add(new ValidationResult("Выберите направление тура", new[] { nameof(TourModel.Direction) }));
             }
 
-            // Если все данные валидны, устанавливаем результат OK и закрываем форму
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if (isValid)
+            {
+                // Если все данные валидны, устанавливаем результат OK и закрываем форму
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            else
+            {
+                // Если есть ошибки валидации, отображаем их через ErrorProvider
+                foreach (var validationResult in results)
+                {
+                    foreach (var memberName in validationResult.MemberNames)
+                    {
+                        // Сопоставляем имя свойства с соответствующим контролом
+                        Control? control = memberName switch
+                        {
+                            nameof(TourModel.Direction) => comboBoxDirection,
+                            nameof(TourModel.DepartureDate) => dateTimePickerDepartureDate,
+                            nameof(TourModel.NumberNights) => numericUpDownNumberNights,
+                            nameof(TourModel.CostPerVacationer) => textBoxCostPerVacationer,
+                            nameof(TourModel.NumberVacationers) => numericUpDownNumberVacationers,
+                            nameof(TourModel.Surcharges) => textBoxSurcharges,
+                            _ => null
+                        };
+
+                        // Устанавливаем сообщение об ошибке для соответствующего контрола
+                        if (control != null)
+                        {
+                            errorProvider1.SetError(control, validationResult.ErrorMessage);
+                        }
+                    }
+                }
+
+                // Показываем общее сообщение о необходимости исправить ошибки
+                MessageBox.Show("Исправьте ошибки в форме перед сохранением.", "Ошибка валидации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -130,87 +164,6 @@ namespace LastMinuteTours.Forms
             // Закрываем форму с результатом Cancel
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-        }
-
-        /// <summary>
-        /// Валидация выбора направления тура
-        /// </summary>
-        private void comboBoxDirection_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Валидация даты вылета
-        /// </summary>
-        private void dateTimePickerDepartureDate_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Валидация количества ночей
-        /// </summary>
-        private void numericUpDownNumberNights_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Валидация стоимости за отдыхающего
-        /// </summary>
-        private void textBoxCostPerVacationer_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Валидация количества отдыхающих
-        /// </summary>
-        private void numericUpDownNumberVacationers_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Валидация суммы доплат
-        /// </summary>
-        private void textBoxSurcharges_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ValidateForm();
-        }
-
-        /// <summary>
-        /// Метод для проверки валидности всей формы
-        /// </summary>
-        private void ValidateForm()
-        {
-            UpdateSaveButtonState();
-        }
-
-        /// <summary>
-        /// Обновление состояния кнопки сохранения
-        /// </summary>
-        private void UpdateSaveButtonState()
-        {
-            // Проверяем, что все поля валидны
-            bool isValid = targetTour.IsValid() &&
-                          targetTour.Direction != Direction.Unknown; // Дополнительная проверка для направления
-
-            buttonSave.Enabled = isValid; // Включаем или отключаем кнопку сохранения в зависимости от валидности
-
-            if (!isValid)
-            {
-                // Дополнительная проверка для направления
-                if (targetTour.Direction == Direction.Unknown)
-                {
-                    errorProvider1.SetError(comboBoxDirection, "Выберите направление тура");
-                }
-                else
-                {
-                    errorProvider1.SetError(comboBoxDirection, string.Empty);
-                }
-            }
         }
 
         /// <summary>

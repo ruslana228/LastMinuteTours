@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LastMinuteTours.Models
 {
@@ -31,7 +30,7 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Стоимость за отдыхающего (руб)
         /// </summary>
-        [Range(0.01, 100000, ErrorMessage = "Стоимость должна быть в диапазоне от 0 до 100000")]
+        [Range(0.01, 100000, ErrorMessage = "Стоимость должна быть больше 0, но меньше 100000 руб.")]
         public decimal CostPerVacationer { get; set; }
 
         /// <summary>
