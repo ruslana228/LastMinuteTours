@@ -30,27 +30,14 @@ namespace LastMinuteTours.Infrostructure
 
             if (errorProvider != null)
             {
+                var context = new ValidationContext(source);
+                var results = new List<ValidationResult>();
+
                 // Обработчик потери фокуса для валидации
                 control.Validating += (sender, e) =>
                 {
                     ValidateControl(control, source, sourcePropertyName, errorProvider);
                 };
-                // Проверка для NumericUpDown
-                if (control is NumericUpDown num)
-                {
-                    num.ValueChanged += (sender, e) =>
-                    {
-                        ValidateControl(control, source, sourcePropertyName, errorProvider);
-                    };
-                }
-                // Проверка для ComboBox
-                if (control is ComboBox combo)
-                {
-                    combo.SelectedIndexChanged += (sender, e) =>
-                    {
-                        ValidateControl(control, source, sourcePropertyName, errorProvider);
-                    };
-                }
             }
         }
 
@@ -104,17 +91,6 @@ namespace LastMinuteTours.Infrostructure
             {
                 errorProvider.SetError(control, string.Empty);
             }
-        }
-
-        /// <summary>
-        /// Метод для проверки валидности всего объекта
-        /// </summary>
-        public static bool IsValid(this object obj)
-        {
-            // Создание контекста валидации
-            var context = new ValidationContext(obj);
-            var results = new List<ValidationResult>();
-            return Validator.TryValidateObject(obj, context, results, true); // Возвращение результата валидации
         }
     }
 }

@@ -8,15 +8,9 @@ namespace LastMinuteTours
     /// </summary>
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// Коллекция туров, используемая в качестве источника данных
-        /// </summary>
-        private readonly List<TourModel> items;
+        private readonly List<TourModel> items; // Коллекция туров, используемая в качестве источника данных
 
-        /// <summary>
-        /// Компонент для привязки данных между коллекцией и DataGridView
-        /// </summary>
-        private readonly BindingSource bindingSource = new();
+        private readonly BindingSource bindingSource = new(); // Компонент для привязки данных между коллекцией и DataGridView
 
         /// <summary>
         /// Конструктор главной формы
@@ -115,7 +109,7 @@ namespace LastMinuteTours
             if (row.DataBoundItem == null)
                 return;
 
-            var tour = (TourModel)dataGridViewTours.Rows[e.RowIndex].DataBoundItem; // Получение объекта тура, привязанного к текущей строке
+            var tour = (TourModel)row.DataBoundItem; // Получение объекта тура, привязанного к текущей строке
 
             // Форматирование колонки "Направление" - преобразование enum в читаемый текст
             if (col.DataPropertyName == nameof(TourModel.Direction))
@@ -150,15 +144,24 @@ namespace LastMinuteTours
                     ? "Да" // Если Wi-Fi есть
                     : "Нет"; // Если Wi-Fi нет
             }
+
+            if (col.Name == "DGTotalCost")
+            {
+                decimal totalCost = (tour.CostPerVacationer * tour.NumberVacationers) + tour.Surcharges;
+                e.Value = totalCost.ToString("N2");
+            }
         }
+        
 
         /// <summary>
         /// Метод для вычисления и отображения общих показателей по всем турам
         /// </summary>
         private void SetStatistics()
         {
+            decimal CalculateTotalCost(TourModel tour) => (tour.CostPerVacationer * tour.NumberVacationers) + tour.Surcharges;
+
             toolStrpLblTotalTours.Text = $"Общее кол-во туров: {items.Count}";
-            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {items.Sum(t => t.TotalCost)} руб.";
+            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {items.Sum(CalculateTotalCost)} руб.";
             toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {items.Count(t => t.Surcharges > 0)}";
             toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {items.Sum(t => t.Surcharges)}";
         }

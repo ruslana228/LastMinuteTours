@@ -44,10 +44,10 @@
             checkBoxAvailabilityWiFiYes = new CheckBox();
             buttonSave = new Button();
             buttonCancel = new Button();
-            errorProvider1 = new ErrorProvider(components);
+            errorProviderTourForm = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberVacationers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberNights).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProviderTourForm).BeginInit();
             SuspendLayout();
             // 
             // labelDirection
@@ -201,9 +201,9 @@
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
             // 
-            // errorProvider1
+            // errorProviderTourForm
             // 
-            errorProvider1.ContainerControl = this;
+            errorProviderTourForm.ContainerControl = this;
             // 
             // TourForm
             // 
@@ -233,7 +233,7 @@
             Text = "Параметры тура";
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberVacationers).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownNumberNights).EndInit();
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProviderTourForm).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -255,6 +255,6 @@
         private CheckBox checkBoxAvailabilityWiFiYes;
         private Button buttonSave;
         private Button buttonCancel;
-        private ErrorProvider errorProvider1;
+        private ErrorProvider errorProviderTourForm;
     }
 }

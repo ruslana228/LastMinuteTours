@@ -49,10 +49,5 @@ namespace LastMinuteTours.Models
         /// </summary>
         [Range(0.00, 100000, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
         public decimal Surcharges { get; set; }
-
-        /// <summary>
-        /// Общая стоимость
-        /// </summary>
-        public decimal TotalCost => (CostPerVacationer * NumberVacationers) + Surcharges;
     }
 }

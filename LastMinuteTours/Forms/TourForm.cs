@@ -42,7 +42,7 @@ namespace LastMinuteTours.Forms
                 targetTour = new TourModel
                 {
                     Id = Guid.NewGuid(),
-                    Direction = Direction.Unknown,
+                    Direction = Direction.Turkey,
                     DepartureDate = DateOnly.FromDateTime(DateTime.Now),
                     NumberNights = 0,
                     CostPerVacationer = 0.00m,
@@ -62,11 +62,11 @@ namespace LastMinuteTours.Forms
             dateTimePickerDepartureDate.DataBindings.Add(dateTimePickerBinding);
 
             // Привязка с errorProvider
-            comboBoxDirection.AddBinding(x => x.SelectedItem, targetTour, x => x.Direction, errorProvider1);
-            numericUpDownNumberNights.AddBinding(x => x.Value, targetTour, x => x.NumberNights, errorProvider1);
-            textBoxCostPerVacationer.AddBinding(x => x.Text, targetTour, x => x.CostPerVacationer, errorProvider1);
-            numericUpDownNumberVacationers.AddBinding(x => x.Value, targetTour, x => x.NumberVacationers, errorProvider1);
-            textBoxSurcharges.AddBinding(x => x.Text, targetTour, x => x.Surcharges, errorProvider1);
+            comboBoxDirection.AddBinding(x => x.SelectedItem, targetTour, x => x.Direction, errorProviderTourForm);
+            numericUpDownNumberNights.AddBinding(x => x.Value, targetTour, x => x.NumberNights, errorProviderTourForm);
+            textBoxCostPerVacationer.AddBinding(x => x.Text, targetTour, x => x.CostPerVacationer, errorProviderTourForm);
+            numericUpDownNumberVacationers.AddBinding(x => x.Value, targetTour, x => x.NumberVacationers, errorProviderTourForm);
+            textBoxSurcharges.AddBinding(x => x.Text, targetTour, x => x.Surcharges, errorProviderTourForm);
             checkBoxAvailabilityWiFiYes.AddBinding(x => x.Checked, targetTour, x => x.AvailabilityWiFi);
         }
 
@@ -100,23 +100,13 @@ namespace LastMinuteTours.Forms
         /// </summary>
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            // Очищаем все предыдущие ошибки
-            errorProvider1.Clear();
-
             // Создаем контекст валидации для целевого тура
             var context = new ValidationContext(targetTour);
             var results = new List<ValidationResult>();
 
             // Выполняем валидацию всего объекта
             var isValid = Validator.TryValidateObject(targetTour, context, results, true);
-
-            // Дополнительная проверка направления (не должно быть Unknown)
-            if (targetTour.Direction == Direction.Unknown)
-            {
-                isValid = false;
-                results.Add(new ValidationResult("Выберите направление тура", new[] { nameof(TourModel.Direction) }));
-            }
-
+           
             if (isValid)
             {
                 // Если все данные валидны, устанавливаем результат OK и закрываем форму
@@ -145,7 +135,7 @@ namespace LastMinuteTours.Forms
                         // Устанавливаем сообщение об ошибке для соответствующего контрола
                         if (control != null)
                         {
-                            errorProvider1.SetError(control, validationResult.ErrorMessage);
+                            errorProviderTourForm.SetError(control, validationResult.ErrorMessage);
                         }
                     }
                 }

@@ -6,11 +6,6 @@
     public enum Direction: Byte
     {
         /// <summary>
-        /// Неизвестно
-        /// </summary>
-        Unknown,
-
-        /// <summary>
         /// Турция
         /// </summary>
         Turkey,
@@ -33,6 +28,6 @@
         /// <summary>
         /// Шушары
         /// </summary>
-        Shushary
+        Shushary,
     }
 }

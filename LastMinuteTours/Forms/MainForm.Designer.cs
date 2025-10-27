@@ -29,14 +29,6 @@
         private void InitializeComponent()
         {
             dataGridViewTours = new DataGridView();
-            DGDirection = new DataGridViewTextBoxColumn();
-            DGDepartureDate = new DataGridViewTextBoxColumn();
-            DGNumberNights = new DataGridViewTextBoxColumn();
-            DGCostPerVacationer = new DataGridViewTextBoxColumn();
-            DGNumberVacationers = new DataGridViewTextBoxColumn();
-            DGAvailabilityWiFi = new DataGridViewTextBoxColumn();
-            DGSurcharges = new DataGridViewTextBoxColumn();
-            DGTotalCost = new DataGridViewTextBoxColumn();
             statusStripRegistry = new StatusStrip();
             toolStrpLblTotalTours = new ToolStripStatusLabel();
             toolStrpLblTotalCost = new ToolStripStatusLabel();
@@ -46,6 +38,14 @@
             tlStrpBtnAdd = new ToolStripButton();
             tlStrpBtnEdit = new ToolStripButton();
             tlStrpBtnDelete = new ToolStripButton();
+            DGDirection = new DataGridViewTextBoxColumn();
+            DGDepartureDate = new DataGridViewTextBoxColumn();
+            DGNumberNights = new DataGridViewTextBoxColumn();
+            DGCostPerVacationer = new DataGridViewTextBoxColumn();
+            DGNumberVacationers = new DataGridViewTextBoxColumn();
+            DGAvailabilityWiFi = new DataGridViewTextBoxColumn();
+            DGSurcharges = new DataGridViewTextBoxColumn();
+            DGTotalCost = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTours).BeginInit();
             statusStripRegistry.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -66,62 +66,6 @@
             dataGridViewTours.Size = new Size(851, 397);
             dataGridViewTours.TabIndex = 0;
             dataGridViewTours.CellFormatting += dataGridViewTours_CellFormatting;
-            // 
-            // DGDirection
-            // 
-            DGDirection.DataPropertyName = "Direction";
-            DGDirection.HeaderText = "Направление ";
-            DGDirection.Name = "DGDirection";
-            DGDirection.ReadOnly = true;
-            // 
-            // DGDepartureDate
-            // 
-            DGDepartureDate.DataPropertyName = "DepartureDate";
-            DGDepartureDate.HeaderText = "Дата вылета";
-            DGDepartureDate.Name = "DGDepartureDate";
-            DGDepartureDate.ReadOnly = true;
-            // 
-            // DGNumberNights
-            // 
-            DGNumberNights.DataPropertyName = "NumberNights";
-            DGNumberNights.HeaderText = "Количество ночей";
-            DGNumberNights.Name = "DGNumberNights";
-            DGNumberNights.ReadOnly = true;
-            // 
-            // DGCostPerVacationer
-            // 
-            DGCostPerVacationer.DataPropertyName = "CostPerVacationer";
-            DGCostPerVacationer.HeaderText = "Стоимость за отдыхающего (руб)";
-            DGCostPerVacationer.Name = "DGCostPerVacationer";
-            DGCostPerVacationer.ReadOnly = true;
-            // 
-            // DGNumberVacationers
-            // 
-            DGNumberVacationers.DataPropertyName = "NumberVacationers";
-            DGNumberVacationers.HeaderText = "Количество отдыхающих";
-            DGNumberVacationers.Name = "DGNumberVacationers";
-            DGNumberVacationers.ReadOnly = true;
-            // 
-            // DGAvailabilityWiFi
-            // 
-            DGAvailabilityWiFi.DataPropertyName = "AvailabilityWiFi";
-            DGAvailabilityWiFi.HeaderText = "Наличие Wi-Fi";
-            DGAvailabilityWiFi.Name = "DGAvailabilityWiFi";
-            DGAvailabilityWiFi.ReadOnly = true;
-            // 
-            // DGSurcharges
-            // 
-            DGSurcharges.DataPropertyName = "Surcharges";
-            DGSurcharges.HeaderText = "Доплаты (руб)";
-            DGSurcharges.Name = "DGSurcharges";
-            DGSurcharges.ReadOnly = true;
-            // 
-            // DGTotalCost
-            // 
-            DGTotalCost.DataPropertyName = "TotalCost";
-            DGTotalCost.HeaderText = "Общая стоимость";
-            DGTotalCost.Name = "DGTotalCost";
-            DGTotalCost.ReadOnly = true;
             // 
             // statusStripRegistry
             // 
@@ -205,6 +149,61 @@
             tlStrpBtnDelete.Text = "Удалить";
             tlStrpBtnDelete.Click += tlStrpBtnDelete_Click;
             // 
+            // DGDirection
+            // 
+            DGDirection.DataPropertyName = "Direction";
+            DGDirection.HeaderText = "Направление ";
+            DGDirection.Name = "DGDirection";
+            DGDirection.ReadOnly = true;
+            // 
+            // DGDepartureDate
+            // 
+            DGDepartureDate.DataPropertyName = "DepartureDate";
+            DGDepartureDate.HeaderText = "Дата вылета";
+            DGDepartureDate.Name = "DGDepartureDate";
+            DGDepartureDate.ReadOnly = true;
+            // 
+            // DGNumberNights
+            // 
+            DGNumberNights.DataPropertyName = "NumberNights";
+            DGNumberNights.HeaderText = "Количество ночей";
+            DGNumberNights.Name = "DGNumberNights";
+            DGNumberNights.ReadOnly = true;
+            // 
+            // DGCostPerVacationer
+            // 
+            DGCostPerVacationer.DataPropertyName = "CostPerVacationer";
+            DGCostPerVacationer.HeaderText = "Стоимость за отдыхающего (руб)";
+            DGCostPerVacationer.Name = "DGCostPerVacationer";
+            DGCostPerVacationer.ReadOnly = true;
+            // 
+            // DGNumberVacationers
+            // 
+            DGNumberVacationers.DataPropertyName = "NumberVacationers";
+            DGNumberVacationers.HeaderText = "Количество отдыхающих";
+            DGNumberVacationers.Name = "DGNumberVacationers";
+            DGNumberVacationers.ReadOnly = true;
+            // 
+            // DGAvailabilityWiFi
+            // 
+            DGAvailabilityWiFi.DataPropertyName = "AvailabilityWiFi";
+            DGAvailabilityWiFi.HeaderText = "Наличие Wi-Fi";
+            DGAvailabilityWiFi.Name = "DGAvailabilityWiFi";
+            DGAvailabilityWiFi.ReadOnly = true;
+            // 
+            // DGSurcharges
+            // 
+            DGSurcharges.DataPropertyName = "Surcharges";
+            DGSurcharges.HeaderText = "Доплаты (руб)";
+            DGSurcharges.Name = "DGSurcharges";
+            DGSurcharges.ReadOnly = true;
+            // 
+            // DGTotalCost
+            // 
+            DGTotalCost.HeaderText = "Общая стоимость (руб)";
+            DGTotalCost.Name = "DGTotalCost";
+            DGTotalCost.ReadOnly = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -236,6 +235,10 @@
         private ToolStripButton tlStrpBtnAdd;
         private ToolStripButton tlStrpBtnEdit;
         private ToolStripButton tlStrpBtnDelete;
+        private ToolStripStatusLabel toolStrpLblTotalTours;
+        private ToolStripStatusLabel toolStrpLblTotalCost;
+        private ToolStripStatusLabel toolStrpLblToursWithSurcharges;
+        private ToolStripStatusLabel toolStrpLblTotalSurcharges;
         private DataGridViewTextBoxColumn DGDirection;
         private DataGridViewTextBoxColumn DGDepartureDate;
         private DataGridViewTextBoxColumn DGNumberNights;
@@ -244,9 +247,5 @@
         private DataGridViewTextBoxColumn DGAvailabilityWiFi;
         private DataGridViewTextBoxColumn DGSurcharges;
         private DataGridViewTextBoxColumn DGTotalCost;
-        private ToolStripStatusLabel toolStrpLblTotalTours;
-        private ToolStripStatusLabel toolStrpLblTotalCost;
-        private ToolStripStatusLabel toolStrpLblToursWithSurcharges;
-        private ToolStripStatusLabel toolStrpLblTotalSurcharges;
     }
 }
