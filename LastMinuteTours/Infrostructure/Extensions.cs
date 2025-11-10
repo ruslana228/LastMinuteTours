@@ -30,9 +30,6 @@ namespace LastMinuteTours.Infrostructure
 
             if (errorProvider != null)
             {
-                var context = new ValidationContext(source);
-                var results = new List<ValidationResult>();
-
                 // Обработчик потери фокуса для валидации
                 control.Validating += (sender, e) =>
                 {
@@ -46,12 +43,12 @@ namespace LastMinuteTours.Infrostructure
         /// </summary>
         private static string GetPropertyName<T>(Expression<Func<T, object>> expression)
         {
+
             var memberExpression = expression.Body as MemberExpression; // Получаем доступ к свойству как MemberExpression
 
             if (memberExpression == null)
             {
-                var unaryExpression = expression.Body as UnaryExpression;
-                if (unaryExpression != null)
+                if (expression.Body is UnaryExpression unaryExpression)
                 {
                     memberExpression = unaryExpression.Operand as MemberExpression; // Извлекаем операнд унарного выражения (само свойство)
                 }

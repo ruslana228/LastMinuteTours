@@ -1,7 +1,6 @@
-﻿using LastMinuteTours.Forms;
-using LastMinuteTours.Models;
+﻿using LastMinuteTours.Models;
 
-namespace LastMinuteTours
+namespace LastMinuteTours.Forms
 {
     /// <summary>
     /// Главная форма приложения для управления турами
@@ -24,7 +23,7 @@ namespace LastMinuteTours
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
-                Direction = Models.Direction.Turkey,
+                Direction = Direction.Turkey,
                 DepartureDate = DateOnly.Parse("20.10.2025"),
                 NumberNights = 5,
                 CostPerVacationer = 45000.00m,
@@ -36,7 +35,7 @@ namespace LastMinuteTours
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
-                Direction = Models.Direction.Spain,
+                Direction = Direction.Spain,
                 DepartureDate = DateOnly.Parse("15.11.2025"),
                 NumberNights = 7,
                 CostPerVacationer = 68000.00m,
@@ -48,7 +47,7 @@ namespace LastMinuteTours
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
-                Direction = Models.Direction.Italy,
+                Direction = Direction.Italy,
                 DepartureDate = DateOnly.Parse("05.12.2025"),
                 NumberNights = 6,
                 CostPerVacationer = 72000.00m,
@@ -60,7 +59,7 @@ namespace LastMinuteTours
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
-                Direction = Models.Direction.France,
+                Direction = Direction.France,
                 DepartureDate = DateOnly.Parse("12.01.2026"),
                 NumberNights = 8,
                 CostPerVacationer = 89000.00m,
@@ -72,7 +71,7 @@ namespace LastMinuteTours
             items.Add(new TourModel
             {
                 Id = Guid.NewGuid(),
-                Direction = Models.Direction.Shushary,
+                Direction = Direction.Shushary,
                 DepartureDate = DateOnly.Parse("25.10.2025"),
                 NumberNights = 2,
                 CostPerVacationer = 5000.00m,
@@ -99,7 +98,9 @@ namespace LastMinuteTours
             // Проверка, что это не заголовок и строка существует
             // Заголовки имеют RowIndex = -1, поэтому их пропускаем
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
+            { 
                 return;
+            }
 
             // Получение ссылок на колонку и строку для которой происходит форматирование
             var col = dataGridViewTours.Columns[e.ColumnIndex];
@@ -107,7 +108,9 @@ namespace LastMinuteTours
 
             // Проверка, что строка содержит данные
             if (row.DataBoundItem == null)
+            {
                 return;
+            }
 
             var tour = (TourModel)row.DataBoundItem; // Получение объекта тура, привязанного к текущей строке
 
@@ -147,7 +150,7 @@ namespace LastMinuteTours
 
             if (col.Name == "DGTotalCost")
             {
-                decimal totalCost = (tour.CostPerVacationer * tour.NumberVacationers) + tour.Surcharges;
+                var totalCost = (tour.CostPerVacationer * tour.NumberVacationers) + tour.Surcharges;
                 e.Value = totalCost.ToString("N2");
             }
         }
@@ -158,10 +161,11 @@ namespace LastMinuteTours
         /// </summary>
         private void SetStatistics()
         {
-            decimal CalculateTotalCost(TourModel tour) => (tour.CostPerVacationer * tour.NumberVacationers) + tour.Surcharges;
+            // Вычисление общей суммы за все туры
+            var totalCostAllTours = items.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
 
             toolStrpLblTotalTours.Text = $"Общее кол-во туров: {items.Count}";
-            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {items.Sum(CalculateTotalCost)} руб.";
+            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {totalCostAllTours} руб.";
             toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {items.Count(t => t.Surcharges > 0)}";
             toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {items.Sum(t => t.Surcharges)}";
         }

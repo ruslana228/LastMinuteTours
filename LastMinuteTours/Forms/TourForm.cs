@@ -57,8 +57,8 @@ namespace LastMinuteTours.Forms
             // Настройка эл-тов управления и привязки данных
             comboBoxDirection.DataSource = Enum.GetValues(typeof(Direction));
             var dateTimePickerBinding = new Binding("Value", targetTour, "DepartureDate");
-            dateTimePickerBinding.Format += new ConvertEventHandler(DateOnlyToDateTime!);
-            dateTimePickerBinding.Parse += new ConvertEventHandler(DateTimeTodateOnly!);
+            dateTimePickerBinding.Format += DateOnlyToDateTime!;
+            dateTimePickerBinding.Parse += DateTimeTodateOnly!;
             dateTimePickerDepartureDate.DataBindings.Add(dateTimePickerBinding);
 
             // Привязка с errorProvider
@@ -152,8 +152,8 @@ namespace LastMinuteTours.Forms
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             // Закрываем форму с результатом Cancel
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace LastMinuteTours
+﻿namespace LastMinuteTours.Forms
 {
     partial class MainForm
     {

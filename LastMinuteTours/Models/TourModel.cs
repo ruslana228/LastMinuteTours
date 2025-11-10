@@ -7,6 +7,15 @@ namespace LastMinuteTours.Models
     /// </summary>
     public class TourModel
     {
+        private const int NumberNightsMin = 1; // Минимальное количество ночей
+        private const int NumberNightsMax = 30; // Максимальное количество ночей
+        private const double CostPerVacationerMin = 0.01; // Минимальная стоимость за отдыхающего
+        private const double CostPerVacationerMax = 100000.0; // Максимальная стоимость за отдыхающего
+        private const int NumberVacationersMin = 1; // Минимальное количество отдыхающих
+        private const int NumVacationersMax = 10; // Максимальное количество отдыхающих
+        private const double SurchargesMin = 0.00; // Минимальная сумма доплат
+        private const double SurchargesMax = 100000.0; // Максимальная сумма доплат
+
         /// <summary>
         /// Индентификатор тура
         /// </summary>
@@ -24,19 +33,19 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Количество ночей
         /// </summary>
-        [Range(1, 30, ErrorMessage = "Кол-во ночей должно быть от 1 до 30")]
+        [Range(NumberNightsMin, NumberNightsMax, ErrorMessage = "Кол-во ночей должно быть от 1 до 30")]
         public int NumberNights { get; set; }
 
         /// <summary>
         /// Стоимость за отдыхающего (руб)
         /// </summary>
-        [Range(0.01, 100000, ErrorMessage = "Стоимость должна быть больше 0, но меньше 100000 руб.")]
+        [Range(CostPerVacationerMin, CostPerVacationerMax, ErrorMessage = "Стоимость должна быть больше 0, но меньше 100000 руб.")]
         public decimal CostPerVacationer { get; set; }
 
         /// <summary>
         /// Количество отдыхающих
         /// </summary>
-        [Range(1, 10, ErrorMessage = "Кол-во отдыхающих должно быть от 1 до 10")]
+        [Range(NumberVacationersMin, NumVacationersMax, ErrorMessage = "Кол-во отдыхающих должно быть от 1 до 10")]
         public int NumberVacationers { get; set; }
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace LastMinuteTours.Models
         /// <summary>
         /// Доплаты (руб)
         /// </summary>
-        [Range(0.00, 100000, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
+        [Range(SurchargesMin, SurchargesMax, ErrorMessage = "Доплаты должны быть в диапазоне от 0 до 100000")]
         public decimal Surcharges { get; set; }
     }
 }
