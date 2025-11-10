@@ -1,4 +1,6 @@
-﻿namespace LastMinuteTours
+﻿using LastMinuteTours.Forms;
+
+namespace LastMinuteTours
 {
     /// <summary>
     /// Главный класс приложения
