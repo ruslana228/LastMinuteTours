@@ -4,11 +4,35 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Authors>ruslanka</Authors>
+	<PackageId>ruslanka.$(AssemblyName)</PackageId>
+	<Product>ruslanka.$(AssemblyName)</Product>
+	<Description>Services. Библиотека для управления турами. Спирова Руслана ИП-22-3</Description>
+	<Version>1.0.1</Version>
+	<PackageTags>tours; data; services; inmemory</PackageTags>
+	<PackageIcon>icon.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <None Update="icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+	  </None>
+	  <None Update="README.md">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+	  </None>
+	  <None Update="LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+	  </None>
   </ItemGroup>
 
 </Project>
