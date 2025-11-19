@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DataGridViewProject.Models
+namespace Entities.Models
 {
     /// <summary>
     /// Модель тура

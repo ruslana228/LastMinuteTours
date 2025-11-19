@@ -1,5 +1,5 @@
 ﻿using DataGridViewProject.Infrostructure;
-using DataGridViewProject.Models;
+using Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataGridViewProject.Forms

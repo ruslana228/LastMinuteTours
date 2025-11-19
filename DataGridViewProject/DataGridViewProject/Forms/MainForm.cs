@@ -1,4 +1,6 @@
-﻿using DataGridViewProject.Models;
+﻿using Entities.Models;
+using Services;
+using Services.Contracts;
 
 namespace DataGridViewProject.Forms
 {
@@ -7,8 +9,7 @@ namespace DataGridViewProject.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly List<TourModel> items; // Коллекция туров, используемая в качестве источника данных
-
+        private readonly ITourService _tourService; // Коллекция туров, используемая в качестве источника данных
         private readonly BindingSource bindingSource = new(); // Компонент для привязки данных между коллекцией и DataGridView
 
         /// <summary>
@@ -16,75 +17,13 @@ namespace DataGridViewProject.Forms
         /// </summary>
         public MainForm()
         {
-            // Инициализация коллекции
-            items = new List<TourModel>();
-
-            // Добавление туров
-            items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Turkey,
-                DepartureDate = DateOnly.Parse("20.10.2025"),
-                NumberNights = 5,
-                CostPerVacationer = 45000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = true,
-                Surcharges = 0.00m,
-            });
-
-            items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Spain,
-                DepartureDate = DateOnly.Parse("15.11.2025"),
-                NumberNights = 7,
-                CostPerVacationer = 68000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = true,
-                Surcharges = 3200.00m,
-            });
-
-            items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Italy,
-                DepartureDate = DateOnly.Parse("05.12.2025"),
-                NumberNights = 6,
-                CostPerVacationer = 72000.00m,
-                NumberVacationers = 3,
-                AvailabilityWiFi = true,
-                Surcharges = 4100.50m,
-            });
-
-            items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.France,
-                DepartureDate = DateOnly.Parse("12.01.2026"),
-                NumberNights = 8,
-                CostPerVacationer = 89000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = false,
-                Surcharges = 0.00m,
-            });
-
-            items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Shushary,
-                DepartureDate = DateOnly.Parse("25.10.2025"),
-                NumberNights = 2,
-                CostPerVacationer = 5000.00m,
-                NumberVacationers = 4,
-                AvailabilityWiFi = false,
-                Surcharges = 500.00m,
-            });
+            // Инициализация сервиса
+            _tourService = new InMemoryTourService();
 
             InitializeComponent();
 
             dataGridViewTours.AutoGenerateColumns = false; // Отключение автоматического создания колонок
-
-            bindingSource.DataSource = items; // Настройка привязки данных: связываем источник данных с BindingSource
+            bindingSource.DataSource = _tourService.GetAll(); // Настройка привязки данных: связываем источник данных с BindingSource
             dataGridViewTours.DataSource = bindingSource; // Связывание BindingSource с DataGridView для отображения данных
 
             SetStatistics(); // Обновление статистики
@@ -154,7 +93,7 @@ namespace DataGridViewProject.Forms
                 e.Value = totalCost.ToString("N2");
             }
         }
-        
+
 
         /// <summary>
         /// Метод для вычисления и отображения общих показателей по всем турам
@@ -162,12 +101,12 @@ namespace DataGridViewProject.Forms
         private void SetStatistics()
         {
             // Вычисление общей суммы за все туры
-            var totalCostAllTours = items.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
+            var totalCostAllTours = _tourService.GetTotalCostAllTours();
 
-            toolStrpLblTotalTours.Text = $"Общее кол-во туров: {items.Count}";
+            toolStrpLblTotalTours.Text = $"Общее кол-во туров: {_tourService.GetTotalToursCount()}";
             toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {totalCostAllTours} руб.";
-            toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {items.Count(t => t.Surcharges > 0)}";
-            toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {items.Sum(t => t.Surcharges)}";
+            toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {_tourService.GetToursWithSurchargesCount()}";
+            toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {_tourService.GetTotalSurcharges()}";
         }
 
         /// <summary>
@@ -179,7 +118,7 @@ namespace DataGridViewProject.Forms
 
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                items.Add(addForm.CurrentTour); // Добавление тура в коллекцию
+                _tourService.Add(addForm.CurrentTour); // Добавление тура в коллекцию
 
                 bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
                 SetStatistics(); // Обновление статистики с учетом нового тура
@@ -202,23 +141,13 @@ namespace DataGridViewProject.Forms
             var editForm = new TourForm(tour);
             if (editForm.ShowDialog(this) == DialogResult.OK)
             {
-                var selectedTour = items.FirstOrDefault(x => x.Id == editForm.CurrentTour.Id); // Поиск тура в коллекции по идентификатору
-                if (selectedTour != null)
-                {
-                    // Обновление свойств выбранного тура данными из формы редактирования
-                    selectedTour.Direction = editForm.CurrentTour.Direction;
-                    selectedTour.DepartureDate = editForm.CurrentTour.DepartureDate;
-                    selectedTour.NumberNights = editForm.CurrentTour.NumberNights;
-                    selectedTour.CostPerVacationer = editForm.CurrentTour.CostPerVacationer;
-                    selectedTour.NumberVacationers = editForm.CurrentTour.NumberVacationers;
-                    selectedTour.AvailabilityWiFi = editForm.CurrentTour.AvailabilityWiFi;
-                    selectedTour.Surcharges = editForm.CurrentTour.Surcharges;
+                _tourService.Update(editForm.CurrentTour); // Обновление тура через сервис
 
-                    bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
-                    SetStatistics(); // Обновление статистики с учетом нового тура
-                }
+                bindingSource.ResetBindings(false); // Обновление привязки данных
+                SetStatistics(); // Обновление статистики
             }
         }
+        
 
         /// <summary>
         /// Обработчик клика по кнопке "Удалить" - удаление тура
@@ -232,19 +161,17 @@ namespace DataGridViewProject.Forms
             }
 
             var tour = (TourModel)dataGridViewTours.SelectedRows[0].DataBoundItem; // Получение выбранного тура из привязанных данных выбранной строки
-            var selectedTour = items.FirstOrDefault(x => x.Id == tour.Id); // Поиск тура в коллекции по идентификатору
-            
-            // Проверка, что тур найден и получение подтверждение удаления
-            if (selectedTour != null &&
-                MessageBox.Show($"Удалить тур '{tour.Direction}'?",
-                "Удаление тура",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                items.Remove(selectedTour); // Удаление тура из коллекции
 
-                bindingSource.ResetBindings(false); // Обновление привязки данных для отображения нового тура в таблице
-                SetStatistics(); // Обновление статистики с учетом нового тура
+            // Проверка, что тур найден и получение подтверждение удаления
+            if (MessageBox.Show($"Удалить тур '{tour.Direction}'?",
+                    "Удаление тура",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                _tourService.Delete(tour.Id); // Удаление тура через сервис
+
+                bindingSource.ResetBindings(false); // Обновление привязки данных
+                SetStatistics(); // Обновление статистики
             }
         }
     }

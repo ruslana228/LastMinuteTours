@@ -1,4 +1,4 @@
-﻿namespace DataGridViewProject.Models
+﻿namespace Entities.Models
 {
     /// <summary>
     /// Направление тура
