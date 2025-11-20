@@ -8,7 +8,7 @@
 	<PackageId>ruslanka.$(AssemblyName)</PackageId>
 	<Product>ruslanka.$(AssemblyName)</Product>
 	<Description>Services. Библиотека для управления турами. Спирова Руслана ИП-22-3</Description>
-	<Version>1.0.1</Version>
+	<Version>1.0.2</Version>
 	<PackageTags>tours; data; services; inmemory</PackageTags>
 	<PackageIcon>icon.png</PackageIcon>
 	<PackageReadmeFile>README.md</PackageReadmeFile>

@@ -8,101 +8,49 @@ namespace Services
     /// </summary>
     public class InMemoryTourService : ITourService
     {
-        private readonly List<TourModel> _items;
+        private readonly List<TourModel> items;
 
         /// <summary>
         /// Инициализация нового экземпляра, загрузка начальных данных
         /// </summary>
         public InMemoryTourService()
         {
-            _items = new List<TourModel>();
-            InitializeData();
-        }
-
-        private void InitializeData()
-        {
-            _items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Turkey,
-                DepartureDate = DateOnly.Parse("20.10.2025"),
-                NumberNights = 5,
-                CostPerVacationer = 45000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = true,
-                Surcharges = 0.00m,
-            });
-
-            _items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Spain,
-                DepartureDate = DateOnly.Parse("15.11.2025"),
-                NumberNights = 7,
-                CostPerVacationer = 68000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = true,
-                Surcharges = 3200.00m,
-            });
-
-            _items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Italy,
-                DepartureDate = DateOnly.Parse("05.12.2025"),
-                NumberNights = 6,
-                CostPerVacationer = 72000.00m,
-                NumberVacationers = 3,
-                AvailabilityWiFi = true,
-                Surcharges = 4100.50m,
-            });
-
-            _items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.France,
-                DepartureDate = DateOnly.Parse("12.01.2026"),
-                NumberNights = 8,
-                CostPerVacationer = 89000.00m,
-                NumberVacationers = 2,
-                AvailabilityWiFi = false,
-                Surcharges = 0.00m,
-            });
-
-            _items.Add(new TourModel
-            {
-                Id = Guid.NewGuid(),
-                Direction = Direction.Shushary,
-                DepartureDate = DateOnly.Parse("25.10.2025"),
-                NumberNights = 2,
-                CostPerVacationer = 5000.00m,
-                NumberVacationers = 4,
-                AvailabilityWiFi = false,
-                Surcharges = 500.00m,
-            });
+            items = new List<TourModel>();
         }
 
         /// <summary>
         /// Возврат списка всех туров
         /// </summary>
-        public List<TourModel> GetAll() => new List<TourModel>(_items);
+        public Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IReadOnlyCollection<TourModel>>(new List<TourModel>(items));
+        }
 
         /// <summary>
         /// Возврат тура по его идентификатору
         /// </summary>
-        public TourModel GetById(Guid id) => _items.FirstOrDefault(t => t.Id == id);
+        public Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default)
+        {
+            var tour = items.FirstOrDefault(t => t.Id == id);
+            return Task.FromResult<TourModel?>(tour);
+        }
 
         /// <summary>
         /// Добавление нового тура в список
         /// </summary>
-        public void Add(TourModel tour) => _items.Add(tour);
+        public Task Add(TourModel tour, CancellationToken cancellationToken = default)
+        {
+            items.Add(tour);
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// Метод для обновления существующего тура в списке по его идентификатору
         /// </summary>
-        public void Update(TourModel tour)
+        public Task Update(TourModel tour, CancellationToken cancellationToken = default)
         {
-            var existingTour = _items.FirstOrDefault(t => t.Id == tour.Id);
+            var existingTour = items.FirstOrDefault(t => t.Id == tour.Id);
+
             if (existingTour != null)
             {
                 existingTour.Direction = tour.Direction;
@@ -113,36 +61,62 @@ namespace Services
                 existingTour.AvailabilityWiFi = tour.AvailabilityWiFi;
                 existingTour.Surcharges = tour.Surcharges;
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Метод для удаления тура из списка по его идентификатору
         /// </summary>
-        public void Delete(Guid id)
+        public Task Delete(Guid id, CancellationToken cancellationToken = default)
         {
-            var tour = _items.FirstOrDefault(t => t.Id == id);
+            var tour = items.FirstOrDefault(t => t.Id == id);
+
             if (tour != null)
-                _items.Remove(tour);
+            {
+                items.Remove(tour);
+            }
+
+            return Task.CompletedTask;
+
         }
 
         /// <summary>
         /// Возвращает общее количество туров
         /// </summary>
-        public int GetTotalToursCount() => _items.Count;
+        public Task<int> GetTotalToursCount(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(items.Count);
+        }
 
         /// <summary>
         /// Возвращает общую стоимость всех туров (включая доплаты)
         /// </summary>
-        public decimal GetTotalCostAllTours() => _items.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
+        public Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default)
+        {
+            var total = items.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
+
+            return Task.FromResult(total);
+        }
 
         /// <summary>
         /// Возвращает количество туров, у которых есть доплаты
         /// </summary>
-        public int GetToursWithSurchargesCount() => _items.Count(t => t.Surcharges > 0);
+        public Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default)
+        {
+            var count = items.Count(t => t.Surcharges > 0);
+
+            return Task.FromResult(count);
+        }
 
         /// <summary>
         /// Возвращает общую сумму всех доплат по всем турам
         /// </summary>
-        public decimal GetTotalSurcharges() => _items.Sum(t => t.Surcharges);
+        public Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default)
+        {
+            var total = items.Sum(t => t.Surcharges);
+
+            return Task.FromResult(total);
+        }
     }
 }

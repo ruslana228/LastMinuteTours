@@ -10,46 +10,46 @@ namespace Services.Contracts
         /// <summary>
         /// Возвращает список всех туров
         /// </summary>
-        List<TourModel> GetAll();
+        Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает тур по его идентификатору
         /// </summary>
-        TourModel GetById(Guid id);
+        Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Добавляет новый тур
         /// </summary>
-        void Add(TourModel tour);
+        Task Add(TourModel tour, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Обновляет существующий тур
         /// </summary>
-        void Update(TourModel tour);
+        Task Update(TourModel tour, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Удаляет тур по его идентификатору
         /// </summary>
-        void Delete(Guid id);
+        Task Delete(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает общее количество туров
         /// </summary>
-        int GetTotalToursCount();
+        Task<int> GetTotalToursCount(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает общую стоимость всех туров (включая доплаты)
         /// </summary>
-        decimal GetTotalCostAllTours();
+        Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает количество туров, у которых есть доплаты
         /// </summary>
-        int GetToursWithSurchargesCount();
+        Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает общую сумму всех доплат по всем турам
         /// </summary>
-        decimal GetTotalSurcharges();
+        Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default);
     }
 }
