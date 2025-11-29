@@ -7,9 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridViewProject", "Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{14834D9A-803C-43D5-BAA1-766599DDCDAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Contracts", "Services.Contracts\Services.Contracts.csproj", "{181DDF90-600F-4F48-90EA-DB3E9A9322FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryStorage.Contracts", "Services.Contracts\MemoryStorage.Contracts.csproj", "{181DDF90-600F-4F48-90EA-DB3E9A9322FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{78BBE8C7-F1BA-40F3-ABF7-E6BBBD2CE655}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryStorage", "Services\MemoryStorage.csproj", "{78BBE8C7-F1BA-40F3-ABF7-E6BBBD2CE655}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BL", "BL", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{0A1A92EF-2866-4D3C-9D78-5CCECB876D56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +40,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14834D9A-803C-43D5-BAA1-766599DDCDAE} = {0A1A92EF-2866-4D3C-9D78-5CCECB876D56}
+		{181DDF90-600F-4F48-90EA-DB3E9A9322FF} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{78BBE8C7-F1BA-40F3-ABF7-E6BBBD2CE655} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F336F09-3DF1-464F-BA08-83CD91976037}

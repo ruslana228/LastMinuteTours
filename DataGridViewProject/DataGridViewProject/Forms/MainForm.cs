@@ -1,6 +1,6 @@
 ﻿using Entities.Models;
-using Services;
-using Services.Contracts;
+using MemoryStorage;
+using MemoryStorage.Contracts;
 
 namespace DataGridViewProject.Forms
 {
@@ -9,7 +9,7 @@ namespace DataGridViewProject.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly ITourService tourService; // Сервис для работы с турами
+        private readonly ITourStorage tourService; // Сервис для работы с турами
         private readonly BindingSource bindingSource = new(); // Компонент для привязки данных между коллекцией и DataGridView
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace DataGridViewProject.Forms
         public MainForm()
         {
             // Инициализация сервиса
-            tourService = new InMemoryTourService();
+            tourService = new InMemoryTourStorage();
 
             InitializeComponent();
 

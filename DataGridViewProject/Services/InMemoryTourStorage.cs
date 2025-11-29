@@ -1,19 +1,19 @@
 ﻿using Entities.Models;
-using Services.Contracts;
+using MemoryStorage.Contracts;
 
-namespace Services
+namespace MemoryStorage
 {
     /// <summary>
     /// Класс, который предоставляет методы для добавления, обновления, удаления и получения туров, а также для подсчёта статистики.
     /// </summary>
-    public class InMemoryTourService : ITourService
+    public class InMemoryTourStorage : ITourStorage
     {
         private readonly List<TourModel> items;
 
         /// <summary>
         /// Инициализация нового экземпляра, загрузка начальных данных
         /// </summary>
-        public InMemoryTourService()
+        public InMemoryTourStorage()
         {
             items = new List<TourModel>();
         }
@@ -94,7 +94,7 @@ namespace Services
         /// </summary>
         public Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default)
         {
-            var total = items.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
+            var total = items.Sum(t => t.CostPerVacationer * t.NumberVacationers + t.Surcharges);
 
             return Task.FromResult(total);
         }
