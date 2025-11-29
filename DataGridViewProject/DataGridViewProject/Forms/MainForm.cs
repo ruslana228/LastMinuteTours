@@ -202,6 +202,7 @@ namespace DataGridViewProject.Forms
                 await tourManager.Add(addForm.CurrentTour, CancellationToken.None); // Добавление тура через сервис
 
                 bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных для отображения нового тура в таблице
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики с учетом нового тура
             }
         }
@@ -225,6 +226,7 @@ namespace DataGridViewProject.Forms
                 await tourManager.Update(editForm.CurrentTour, CancellationToken.None); // Обновление тура через сервис
 
                 bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики
             }
         }
@@ -252,6 +254,7 @@ namespace DataGridViewProject.Forms
                 await tourManager.Delete(tour.Id, CancellationToken.None); // Удаление тура через сервис
 
                 bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики
             }
         }

@@ -41,24 +41,24 @@ namespace Manager
         /// <summary>
         /// Возвращает общее количество туров
         /// </summary>
-        public Task<int> GetTotalToursCount(CancellationToken cancellationToken = default) => Storage.GetTotalToursCount();
-        
+        public Task<int> GetTotalToursCount(CancellationToken cancellationToken = default) => Storage.GetTotalToursCount(cancellationToken);
+
 
         /// <summary>
         /// Возвращает общую стоимость всех туров (включая доплаты)
         /// </summary>
-        public Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default) => Storage.GetTotalCostAllTours();
+        public Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default) => Storage.GetTotalCostAllTours(cancellationToken);
         
 
         /// <summary>
         /// Возвращает количество туров, у которых есть доплаты
         /// </summary>
-        public Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default) => Storage.GetToursWithSurchargesCount();
+        public Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default) => Storage.GetToursWithSurchargesCount(cancellationToken);
         
 
         /// <summary>
         /// Возвращает общую сумму всех доплат по всем турам
         /// </summary>
-        public Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default) => Storage.GetTotalSurcharges();
+        public Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default) => Storage.GetTotalSurcharges(cancellationToken);
     }
 }
