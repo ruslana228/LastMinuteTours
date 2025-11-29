@@ -23,7 +23,7 @@ namespace Services
         /// </summary>
         public Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IReadOnlyCollection<TourModel>>(new List<TourModel>(items));
+            return Task.FromResult<IReadOnlyCollection<TourModel>>(items);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Services
         public Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var tour = items.FirstOrDefault(t => t.Id == id);
-            return Task.FromResult<TourModel?>(tour);
+            return Task.FromResult(tour);
         }
 
         /// <summary>
