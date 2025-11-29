@@ -1,0 +1,33 @@
+﻿namespace Entities.Models
+{
+    /// <summary>
+    /// Направление тура
+    /// </summary>
+    public enum Direction: Byte
+    {
+        /// <summary>
+        /// Турция
+        /// </summary>
+        Turkey,
+
+        /// <summary>
+        /// Испания
+        /// </summary>
+        Spain,
+
+        /// <summary>
+        /// Италия
+        /// </summary>
+        Italy,
+
+        /// <summary>
+        /// Франция
+        /// </summary>
+        France,
+
+        /// <summary>
+        /// Шушары
+        /// </summary>
+        Shushary,
+    }
+}
