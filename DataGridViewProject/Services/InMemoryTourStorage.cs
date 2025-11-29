@@ -6,7 +6,7 @@ namespace MemoryStorage
     /// <summary>
     /// Класс, который предоставляет методы для добавления, обновления, удаления и получения туров, а также для подсчёта статистики.
     /// </summary>
-    public class InMemoryTourStorage : ITourStorage
+    public class InMemoryTourStorage : ITourManager
     {
         private readonly List<TourModel> items;
 

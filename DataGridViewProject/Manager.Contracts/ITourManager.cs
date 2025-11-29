@@ -1,11 +1,8 @@
 ﻿using Entities.Models;
 
-namespace MemoryStorage.Contracts
+namespace Manager.Contracts
 {
-    /// <summary>
-    ///  Интерфейс, определяющий контракт для сервиса управления турами
-    /// </summary>
-    public interface ITourStorage
+    public interface ITourManager
     {
         /// <summary>
         /// Возвращает список всех туров
