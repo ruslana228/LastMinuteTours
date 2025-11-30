@@ -2,6 +2,7 @@
 using Manager.Contracts;
 using MemoryStorage.Contracts;
 
+
 namespace Manager
 {
     public class TourManager : ITourManager

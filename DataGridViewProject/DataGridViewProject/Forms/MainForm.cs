@@ -25,8 +25,6 @@ namespace DataGridViewProject.Forms
             InitializeComponent();
 
             dataGridViewTours.AutoGenerateColumns = false; // Отключение автоматического создания колонок
-
-            
         }
 
         // Асинхронная инициализация начальных данных
