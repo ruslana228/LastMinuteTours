@@ -218,6 +218,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Реестр туров";
+            Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewTours).EndInit();
             statusStripRegistry.ResumeLayout(false);
             statusStripRegistry.PerformLayout();

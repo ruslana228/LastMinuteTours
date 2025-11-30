@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Manager.Contracts\Manager.Contracts.csproj" />
+    <ProjectReference Include="..\Manager\Manager.csproj" />
     <ProjectReference Include="..\Services.Contracts\MemoryStorage.Contracts.csproj" />
     <ProjectReference Include="..\Services\MemoryStorage.csproj" />
   </ItemGroup>

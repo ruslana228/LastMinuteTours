@@ -30,23 +30,8 @@ namespace Manager.Contracts
         Task Delete(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Возвращает общее количество туров
+        /// Возвращает статистику по всем турам
         /// </summary>
-        Task<int> GetTotalToursCount(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Возвращает общую стоимость всех туров (включая доплаты)
-        /// </summary>
-        Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Возвращает количество туров, у которых есть доплаты
-        /// </summary>
-        Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Возвращает общую сумму всех доплат по всем турам
-        /// </summary>
-        Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default);
+        Task<TourStatistics> GetStatistics(CancellationToken cancellationToken = default);
     }
 }

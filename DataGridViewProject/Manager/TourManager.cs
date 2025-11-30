@@ -4,9 +4,14 @@ using MemoryStorage.Contracts;
 
 namespace Manager
 {
-    public class TourManager(MemoryStorage.Contracts.ITourManager storage): Contracts.ITourManager
+    public class TourManager : ITourManager
     {
-        private MemoryStorage.Contracts.ITourManager Storage { get; } = storage;
+        private ITourStorage Storage { get; }
+
+        public TourManager(ITourStorage storage)
+        {
+            Storage = storage;
+        }
 
         /// <summary>
         /// Возврат списка всех туров
@@ -36,29 +41,28 @@ namespace Manager
         /// Метод для удаления тура из списка по его идентификатору
         /// </summary>
         public Task Delete(Guid id, CancellationToken cancellationToken = default) => Storage.Delete(id, cancellationToken);
-        
-
-        /// <summary>
-        /// Возвращает общее количество туров
-        /// </summary>
-        public Task<int> GetTotalToursCount(CancellationToken cancellationToken = default) => Storage.GetTotalToursCount(cancellationToken);
 
 
         /// <summary>
-        /// Возвращает общую стоимость всех туров (включая доплаты)
+        /// Возвращает статистику по всем турам
         /// </summary>
-        public Task<decimal> GetTotalCostAllTours(CancellationToken cancellationToken = default) => Storage.GetTotalCostAllTours(cancellationToken);
-        
+        public async Task<TourStatistics> GetStatistics(CancellationToken cancellationToken = default)
+        {
+            var tours = await Storage.GetAll(cancellationToken);
 
-        /// <summary>
-        /// Возвращает количество туров, у которых есть доплаты
-        /// </summary>
-        public Task<int> GetToursWithSurchargesCount(CancellationToken cancellationToken = default) => Storage.GetToursWithSurchargesCount(cancellationToken);
-        
+            // Расчет статистики в бизнес-логике
+            var totalToursCount = tours.Count;
+            var totalCostAllTours = tours.Sum(t => (t.CostPerVacationer * t.NumberVacationers) + t.Surcharges);
+            var toursWithSurchargesCount = tours.Count(t => t.Surcharges > 0);
+            var totalSurcharges = tours.Sum(t => t.Surcharges);
 
-        /// <summary>
-        /// Возвращает общую сумму всех доплат по всем турам
-        /// </summary>
-        public Task<decimal> GetTotalSurcharges(CancellationToken cancellationToken = default) => Storage.GetTotalSurcharges(cancellationToken);
+            return new TourStatistics
+            {
+                TotalToursCount = totalToursCount,
+                TotalCostAllTours = totalCostAllTours,
+                ToursWithSurchargesCount = toursWithSurchargesCount,
+                TotalSurcharges = totalSurcharges
+            };
+        }
     }
 }
