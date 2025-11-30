@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Manager.Contracts\Manager.Contracts.csproj" />
     <ProjectReference Include="..\Manager\Manager.csproj" />
     <ProjectReference Include="..\Services.Contracts\MemoryStorage.Contracts.csproj" />

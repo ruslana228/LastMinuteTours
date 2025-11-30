@@ -1,7 +1,6 @@
 ﻿using Ahatornn.TestGenerator;
 using Entities.Models;
 using FluentAssertions;
-using Manager;
 using Manager.Contracts;
 using MemoryStorage.Contracts;
 using Moq;

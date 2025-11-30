@@ -16,15 +16,29 @@ namespace DataGridViewProject.Forms
         /// <summary>
         /// Конструктор главной формы
         /// </summary>
-        public MainForm()
+        public MainForm(ITourManager tourManager)
         {
             // Инициализация сервиса
-            var storage = new InMemoryTourStorage();
-            tourManager = new TourManager(storage);
+            //var storage = new InMemoryTourStorage();
+            //tourManager = new TourManager(storage);
 
+            this.tourManager = tourManager;
             InitializeComponent();
 
             dataGridViewTours.AutoGenerateColumns = false; // Отключение автоматического создания колонок
+        }
+        
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
+            // Загрузка начальных данных
+            await InitializeDataAsync();
+
+            // Настройка привязки данных после загрузки
+            var tours = await tourManager.GetAll(CancellationToken.None);
+            bindingSource.DataSource = tours;
+            dataGridViewTours.DataSource = bindingSource; // Связывание BindingSource с DataGridView для отображения данных
+
+            SetStatistics(); // Обновление статистики
         }
 
         // Асинхронная инициализация начальных данных
@@ -235,19 +249,6 @@ namespace DataGridViewProject.Forms
                 bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики
             }
-        }
-
-        private async void MainForm_Load(object sender, EventArgs e)
-        {
-            // Загрузка начальных данных
-            await InitializeDataAsync();
-
-            // Настройка привязки данных после загрузки
-            var tours = await tourManager.GetAll(CancellationToken.None);
-            bindingSource.DataSource = tours;
-            dataGridViewTours.DataSource = bindingSource; // Связывание BindingSource с DataGridView для отображения данных
-
-            SetStatistics(); // Обновление статистики
         }
     }
 }
