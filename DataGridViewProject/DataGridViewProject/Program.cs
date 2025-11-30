@@ -14,10 +14,12 @@ namespace DataGridViewProject
             // Настройка Serilog для логирования в файл
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                //.WriteTo.Debug()
+                .WriteTo.Debug()
                 .WriteTo.File("logs/tour-manager-.log",
                     rollingInterval: RollingInterval.Day,
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Seq("http://localhost:5341",
+                    apiKey: "56XFeiZz8fsIEahlmmt8")
                 .CreateLogger();
 
             try
