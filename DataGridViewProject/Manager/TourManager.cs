@@ -32,8 +32,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.GetAll выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetAll выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -52,8 +51,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.GetById выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetById выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -71,8 +69,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.Add выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Add выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -90,8 +87,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.Update выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Update выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -109,8 +105,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.Delete выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Delete выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -142,8 +137,7 @@ namespace Manager
             finally
             {
                 sw.Stop();
-                var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                logger.LogDebug("TourManager.GetStatistics выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetStatistics выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
         }
     }

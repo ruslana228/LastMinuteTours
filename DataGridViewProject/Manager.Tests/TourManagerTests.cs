@@ -33,12 +33,12 @@ namespace Manager.Tests
         /// Проверяет, что метод GetAll возвращает все туры и вызывает хранилище один раз
         /// </summary>
         [Fact]
-        public async Task GetAll_ShouldReturnAllTours()
+        public async Task GetAllShouldReturnAllTours()
         {
             // Arrange
             var tour1 = TestEntityProvider.Shared.Create<TourModel>();
             var tour2 = TestEntityProvider.Shared.Create<TourModel>();
-            var expectedTours = new List<TourModel> { tour1, tour2 }.AsReadOnly();
+            var expectedTours = new List<TourModel> { tour1, tour2 };
 
             storageMock.Setup(x => x.GetAll(ct))
                 .ReturnsAsync(expectedTours);
@@ -47,10 +47,7 @@ namespace Manager.Tests
             var result = await tourManager.GetAll(ct);
 
             // Assert
-            result.Should().NotBeEmpty()
-                .And.HaveCount(2)
-                .And.Contain(tour1)
-                .And.Contain(tour2);
+            result.Should().BeEquivalentTo(expectedTours);
             storageMock.Verify(x => x.GetAll(ct), Times.Once);
             storageMock.VerifyNoOtherCalls();
         }
@@ -59,7 +56,7 @@ namespace Manager.Tests
         /// Проверяет, что метод GetById возвращает правильный тур по Id
         /// </summary>
         [Fact]
-        public async Task GetById_ShouldReturnTour()
+        public async Task GetByIdShouldReturnTour()
         {
             // Arrange
             var expectedTour = TestEntityProvider.Shared.Create<TourModel>();
@@ -80,7 +77,7 @@ namespace Manager.Tests
         /// Проверяет, что метод Add вызывает хранилище для добавления тура
         /// </summary>
         [Fact]
-        public async Task Add_ShouldCallStorageAdd()
+        public async Task AddShouldCallStorageAdd()
         {
             // Arrange
             var tour = TestEntityProvider.Shared.Create<TourModel>();
@@ -97,7 +94,7 @@ namespace Manager.Tests
         /// Проверяет, что метод Update вызывает хранилище для обновления тура
         /// </summary>
         [Fact]
-        public async Task Update_ShouldCallStorageUpdate()
+        public async Task UpdateShouldCallStorageUpdate()
         {
             // Arrange
             var tour = TestEntityProvider.Shared.Create<TourModel>();
@@ -114,7 +111,7 @@ namespace Manager.Tests
         /// Проверяет, что метод Delete вызывает хранилище для удаления тура по Id
         /// </summary>
         [Fact]
-        public async Task Delete_ShouldCallStorageDelete()
+        public async Task DeleteShouldCallStorageDelete()
         {
             // Arrange
             var tourId = Guid.NewGuid();
@@ -131,7 +128,7 @@ namespace Manager.Tests
         /// Проверяет, что метод GetStatistics корректно считает статистику по турам
         /// </summary>
         [Fact]
-        public async Task GetStatistics_ShouldCalculateCorrectStatistics()
+        public async Task GetStatisticsShouldCalculateCorrectStatistics()
         {
             // Arrange
             var tour1 = TestEntityProvider.Shared.Create<TourModel>(x =>
@@ -169,7 +166,7 @@ namespace Manager.Tests
         /// Проверяет, что методы TourManager логируют время выполнения
         /// </summary>
         [Fact]
-        public async Task GetAll_ShouldLogExecutionTime()
+        public async Task GetAllShouldLogExecutionTime()
         {
             // Arrange
             var tours = new List<TourModel>().AsReadOnly();

@@ -16,10 +16,6 @@ namespace DataGridViewProject.Forms
         /// </summary>
         public MainForm(ITourManager tourManager)
         {
-            // Инициализация сервиса
-            //var storage = new InMemoryTourStorage();
-            //tourManager = new TourManager(storage);
-
             this.tourManager = tourManager;
             InitializeComponent();
 
