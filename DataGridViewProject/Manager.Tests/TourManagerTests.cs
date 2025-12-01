@@ -3,6 +3,7 @@ using Entities.Models;
 using FluentAssertions;
 using Manager.Contracts;
 using MemoryStorage.Contracts;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -15,6 +16,7 @@ namespace Manager.Tests
     {
         private readonly ITourManager tourManager;
         private readonly Mock<ITourStorage> storageMock;
+        private readonly Mock<ILogger<TourManager>> loggerMock;
         private readonly CancellationToken ct = CancellationToken.None;
 
         /// <summary>
@@ -23,7 +25,8 @@ namespace Manager.Tests
         public TourManagerTests()
         {
             storageMock = new Mock<ITourStorage>();
-            tourManager = new TourManager(storageMock.Object);
+            loggerMock = new Mock<ILogger<TourManager>>();
+            tourManager = new TourManager(storageMock.Object, loggerMock.Object);
         }
 
         /// <summary>
@@ -160,6 +163,31 @@ namespace Manager.Tests
 
             storageMock.Verify(x => x.GetAll(ct), Times.Once);
             storageMock.VerifyNoOtherCalls();
+        }
+
+        /// <summary>
+        /// Проверяет, что методы TourManager логируют время выполнения
+        /// </summary>
+        [Fact]
+        public async Task GetAll_ShouldLogExecutionTime()
+        {
+            // Arrange
+            var tours = new List<TourModel>().AsReadOnly();
+            storageMock.Setup(x => x.GetAll(ct)).ReturnsAsync(tours);
+
+            // Act
+            await tourManager.GetAll(ct);
+
+            // Assert
+            // Проверяем, что был вызов LogDebug с сообщением о времени выполнения
+            loggerMock.Verify(
+                x => x.Log(
+                    LogLevel.Debug,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("TourManager.GetAll выполнен за")),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                Times.Once);
         }
     }
 }

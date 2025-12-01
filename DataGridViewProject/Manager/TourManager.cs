@@ -1,7 +1,7 @@
 ﻿using Entities.Models;
 using Manager.Contracts;
 using MemoryStorage.Contracts;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 
@@ -10,10 +10,12 @@ namespace Manager
     public class TourManager : ITourManager
     {
         private ITourStorage Storage { get; }
+        private readonly ILogger<TourManager> logger;
 
-        public TourManager(ITourStorage storage)
+        public TourManager(ITourStorage storage, ILogger<TourManager> logger)
         {
             Storage = storage;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.GetAll выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetAll выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
 
@@ -51,7 +53,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.GetById выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetById выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
 
@@ -70,7 +72,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.Add выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Add выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
 
@@ -89,7 +91,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.Update выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Update выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
 
@@ -108,7 +110,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.Delete выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.Delete выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
 
@@ -141,7 +143,7 @@ namespace Manager
             {
                 sw.Stop();
                 var ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("TourManager.GetStatistics выполнен за {ElapsedMs:F6} мс", ms);
+                logger.LogDebug("TourManager.GetStatistics выполнен за {ElapsedMs:F6} мс", ms);
             }
         }
     }

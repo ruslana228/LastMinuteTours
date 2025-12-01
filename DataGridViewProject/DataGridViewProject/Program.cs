@@ -1,4 +1,6 @@
 ﻿using DataGridViewProject.Forms;
+using Manager;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace DataGridViewProject
@@ -26,13 +28,20 @@ namespace DataGridViewProject
             {
                 Log.Information("Запуск приложения");
 
-                // To customize application configuration such as set high DPI settings or default font,
-                // see https://aka.ms/applicationconfiguration.
                 ApplicationConfiguration.Initialize();
+
+                // Создаем фабрику логгеров с Serilog
+                using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    builder.AddSerilog(); // Подключаем Serilog как провайдер
+                });
+
+                // Создаем логгер для TourManager через фабрику
+                ILogger<TourManager> logger = loggerFactory.CreateLogger<TourManager>();
 
                 // Создаем зависимости вручную
                 var storage = new MemoryStorage.InMemoryTourStorage();
-                var tourManager = new Manager.TourManager(storage);
+                var tourManager = new TourManager(storage, logger);
                 var mainForm = new MainForm(tourManager);
 
                 Application.Run(mainForm);
