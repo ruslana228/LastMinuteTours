@@ -1,7 +1,5 @@
 ﻿using Entities.Models;
-using Manager;
 using Manager.Contracts;
-using MemoryStorage;
 
 namespace DataGridViewProject.Forms
 {
