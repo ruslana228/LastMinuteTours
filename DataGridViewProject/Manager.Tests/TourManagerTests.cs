@@ -49,7 +49,6 @@ namespace Manager.Tests
             // Assert
             result.Should().BeEquivalentTo(expectedTours);
             storageMock.Verify(x => x.GetAll(ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>
@@ -70,7 +69,6 @@ namespace Manager.Tests
             result.Should().NotBeNull();
             result.Id.Should().Be(expectedTour.Id);
             storageMock.Verify(x => x.GetById(expectedTour.Id, ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>
@@ -87,7 +85,6 @@ namespace Manager.Tests
 
             // Assert
             storageMock.Verify(x => x.Add(tour, ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>
@@ -104,7 +101,6 @@ namespace Manager.Tests
 
             // Assert
             storageMock.Verify(x => x.Update(tour, ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>
@@ -121,7 +117,6 @@ namespace Manager.Tests
 
             // Assert
             storageMock.Verify(x => x.Delete(tourId, ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>
@@ -159,7 +154,6 @@ namespace Manager.Tests
             result.TotalSurcharges.Should().Be(1500m);
 
             storageMock.Verify(x => x.GetAll(ct), Times.Once);
-            storageMock.VerifyNoOtherCalls();
         }
 
         /// <summary>

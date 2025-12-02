@@ -27,12 +27,16 @@ namespace Manager
             try
             {
                 var result = await Storage.GetAll(cancellationToken);
+                sw.Stop();
+                logger.LogDebug("TourManager.GetAll выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
                 return result;
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.GetAll выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
 
@@ -46,12 +50,16 @@ namespace Manager
             try
             {
                 var result = await Storage.GetById(id, cancellationToken);
+                sw.Stop();
+                logger.LogDebug("TourManager.GetById выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
                 return result;
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.GetById выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
 
@@ -65,11 +73,15 @@ namespace Manager
             try
             {
                 await Storage.Add(tour, cancellationToken);
+                sw.Stop();
+                logger.LogDebug("TourManager.Add выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.Add выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
 
@@ -83,11 +95,15 @@ namespace Manager
             try
             {
                 await Storage.Update(tour, cancellationToken);
+                sw.Stop();
+                logger.LogDebug("TourManager.Update выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.Update выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
 
@@ -101,11 +117,15 @@ namespace Manager
             try
             {
                 await Storage.Delete(id, cancellationToken);
+                sw.Stop();
+                logger.LogDebug("TourManager.Delete выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.Delete выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
 
@@ -126,18 +146,24 @@ namespace Manager
                 var toursWithSurchargesCount = tours.Count(t => t.Surcharges > 0);
                 var totalSurcharges = tours.Sum(t => t.Surcharges);
 
-                return new TourStatistics
+                var result = new TourStatistics
                 {
                     TotalToursCount = totalToursCount,
                     TotalCostAllTours = totalCostAllTours,
                     ToursWithSurchargesCount = toursWithSurchargesCount,
                     TotalSurcharges = totalSurcharges
                 };
+
+                sw.Stop();
+                logger.LogDebug("TourManager.GetStatistics выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                return result;
             }
             finally
             {
-                sw.Stop();
-                logger.LogDebug("TourManager.GetStatistics выполнен за {ElapsedMs} мс", sw.ElapsedMilliseconds);
+                if (sw.IsRunning)
+                {
+                    sw.Stop();
+                }
             }
         }
     }
