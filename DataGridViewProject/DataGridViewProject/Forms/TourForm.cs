@@ -70,9 +70,7 @@ namespace DataGridViewProject.Forms
             checkBoxAvailabilityWiFiYes.AddBinding(x => x.Checked, targetTour, x => x.AvailabilityWiFi);
         }
 
-        /// <summary>
-        /// Метод для преобразования DateOnly в DateTime для отображения в DateTimePicker
-        /// </summary>
+        // Метод для преобразования DateOnly в DateTime для отображения в DateTimePicker
         private void DateOnlyToDateTime(object sender, ConvertEventArgs e)
         {
             // Проверка, что целевой тип - DateTime и исходное значение - DateOnly
@@ -83,9 +81,7 @@ namespace DataGridViewProject.Forms
             }
         }
 
-        /// <summary>
-        /// Метод для преобразования DateTime в DateOnly для сохранения в модели
-        /// </summary>
+        // Метод для преобразования DateTime в DateOnly для сохранения в модели
         private void DateTimeTodateOnly(object sender, ConvertEventArgs e)
         {
             // Проверка, что целевой тип - DateOnly и исходное значение - DateTime
@@ -95,9 +91,7 @@ namespace DataGridViewProject.Forms
             }
         }
 
-        /// <summary>
-        /// Обработчик нажатия кнопки "Сохранить/Добавить"
-        /// </summary>
+        // Обработчик нажатия кнопки "Сохранить/Добавить"
         private void buttonSave_Click(object sender, EventArgs e)
         {
             // Создаем контекст валидации для целевого тура
@@ -146,9 +140,7 @@ namespace DataGridViewProject.Forms
             }
         }
 
-        /// <summary>
-        /// Обработчик нажатия кнопки "Отмена"
-        /// </summary>
+        // Обработчик нажатия кнопки "Отмена"
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             // Закрываем форму с результатом Cancel

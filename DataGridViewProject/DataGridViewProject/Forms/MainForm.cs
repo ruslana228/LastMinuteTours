@@ -1,6 +1,5 @@
 ﻿using Entities.Models;
-using Services;
-using Services.Contracts;
+using Manager.Contracts;
 
 namespace DataGridViewProject.Forms
 {
@@ -9,36 +8,38 @@ namespace DataGridViewProject.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly ITourService tourService; // Сервис для работы с турами
+        private readonly ITourManager tourManager; // Сервис для работы с турами
         private readonly BindingSource bindingSource = new(); // Компонент для привязки данных между коллекцией и DataGridView
 
         /// <summary>
         /// Конструктор главной формы
         /// </summary>
-        public MainForm()
+        public MainForm(ITourManager tourManager)
         {
-            // Инициализация сервиса
-            tourService = new InMemoryTourService();
-
+            this.tourManager = tourManager;
             InitializeComponent();
 
             dataGridViewTours.AutoGenerateColumns = false; // Отключение автоматического создания колонок
-
+        }
+        
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
             // Загрузка начальных данных
-            InitializeDataAsync().GetAwaiter().GetResult(); // Загрузка данных асинхронно, но блокируя до завершения
+            await InitializeDataAsync();
 
-            bindingSource.DataSource = tourService.GetAll(CancellationToken.None).GetAwaiter().GetResult(); ; // Настройка привязки данных: связываем источник данных с BindingSource
+            // Настройка привязки данных после загрузки
+            var tours = await tourManager.GetAll(CancellationToken.None);
+            bindingSource.DataSource = tours;
             dataGridViewTours.DataSource = bindingSource; // Связывание BindingSource с DataGridView для отображения данных
 
             SetStatistics(); // Обновление статистики
         }
 
-        /// <summary>
-        /// Асинхронная инициализация начальных данных
-        /// </summary>
+        // Асинхронная инициализация начальных данных
         private async Task InitializeDataAsync()
         {
-            var existingTours = await tourService.GetAll(CancellationToken.None);
+            var existingTours = await tourManager.GetAll(CancellationToken.None);
+
             if (existingTours.Count > 0)
             {
                 return; // Данные уже есть, не добавляем снова
@@ -105,19 +106,17 @@ namespace DataGridViewProject.Forms
 
             foreach (var tour in tours)
             {
-                await tourService.Add(tour, CancellationToken.None);
+                await tourManager.Add(tour, CancellationToken.None);
             }
         }
 
-        /// <summary>
-        /// Обработчик события форматирования ячеек DataGridView
-        /// </summary>
+        // Обработчик события форматирования ячеек DataGridView
         private void dataGridViewTours_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Проверка, что это не заголовок и строка существует
             // Заголовки имеют RowIndex = -1, поэтому их пропускаем
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
-            { 
+            {
                 return;
             }
 
@@ -174,41 +173,32 @@ namespace DataGridViewProject.Forms
             }
         }
 
-
-        /// <summary>
-        /// Метод для вычисления и отображения общих показателей по всем турам
-        /// </summary>
+        // Метод для вычисления и отображения общих показателей по всем турам
         private async void SetStatistics()
         {
-            // Вычисление общей суммы за все туры
-            var totalCostAllTours = await tourService.GetTotalCostAllTours(CancellationToken.None);
-            var totalTours = await tourService.GetTotalToursCount(CancellationToken.None);
+            var statistics = await tourManager.GetStatistics(CancellationToken.None);
 
-            toolStrpLblTotalTours.Text = $"Общее кол-во туров: {totalTours}";
-            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {totalCostAllTours} руб.";
-            toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {tourService.GetToursWithSurchargesCount()}";
-            toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {tourService.GetTotalSurcharges()}";
+            toolStrpLblTotalTours.Text = $"Общее кол-во туров: {statistics.TotalToursCount}";
+            toolStrpLblTotalCost.Text = $"Общая сумма за все туры: {statistics.TotalCostAllTours:N2} руб.";
+            toolStrpLblToursWithSurcharges.Text = $"Кол-во туров с доплатами: {statistics.ToursWithSurchargesCount}";
+            toolStrpLblTotalSurcharges.Text = $"Общая сумма доплат: {statistics.TotalSurcharges:N2} руб.";
         }
 
-        /// <summary>
-        /// Обработчик клика по кнопке "Добавить" - добавление нового тура
-        /// </summary>
+        // Обработчик клика по кнопке "Добавить" - добавление нового тура
         private async void tlStrpBtnAdd_Click(object sender, EventArgs e)
         {
             var addForm = new TourForm(); // Создание новой формы для добавления тура
-
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                await tourService.Add(addForm.CurrentTour, CancellationToken.None); // Добавление тура через сервис
+                await tourManager.Add(addForm.CurrentTour, CancellationToken.None); // Добавление тура через менеджер
 
-                bindingSource.DataSource = await tourService.GetAll(CancellationToken.None); // Обновление привязки данных для отображения нового тура в таблице
+                bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных для отображения нового тура в таблице
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики с учетом нового тура
             }
         }
 
-        /// <summary>
-        /// Обработчик клика по кнопке "Редактировать" - редактирование туров
-        /// </summary>
+        // Обработчик клика по кнопке "Редактировать" - редактирование туров
         private async void tlStrpBtnEdit_Click(object sender, EventArgs e)
         {
             // Проверка, что пользователь выбрал строку для редактирования
@@ -222,17 +212,15 @@ namespace DataGridViewProject.Forms
             var editForm = new TourForm(tour);
             if (editForm.ShowDialog(this) == DialogResult.OK)
             {
-                await tourService.Update(editForm.CurrentTour, CancellationToken.None); // Обновление тура через сервис
+                await tourManager.Update(editForm.CurrentTour, CancellationToken.None); // Обновление тура через сервис
 
-                bindingSource.DataSource = await tourService.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики
             }
         }
-        
 
-        /// <summary>
-        /// Обработчик клика по кнопке "Удалить" - удаление тура
-        /// </summary>
+        // Обработчик клика по кнопке "Удалить" - удаление тура
         private async void tlStrpBtnDelete_Click(object sender, EventArgs e)
         {
             // Проверка, что пользователь выбрал строку для редактирования
@@ -249,9 +237,10 @@ namespace DataGridViewProject.Forms
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                await tourService.Delete(tour.Id, CancellationToken.None); // Удаление тура через сервис
+                await tourManager.Delete(tour.Id, CancellationToken.None); // Удаление тура через сервис
 
-                bindingSource.DataSource = await tourService.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.DataSource = await tourManager.GetAll(CancellationToken.None); // Обновление привязки данных
+                bindingSource.ResetBindings(false);
                 SetStatistics(); // Обновление статистики
             }
         }

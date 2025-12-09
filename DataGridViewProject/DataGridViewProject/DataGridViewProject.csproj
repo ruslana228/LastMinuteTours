@@ -13,10 +13,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ruslanka.Services" Version="1.0.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
   </ItemGroup>
 
-  <ItemGroup>    <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Manager.Contracts\Manager.Contracts.csproj" />
+    <ProjectReference Include="..\Manager\Manager.csproj" />
+    <ProjectReference Include="..\Services.Contracts\MemoryStorage.Contracts.csproj" />
+    <ProjectReference Include="..\Services\MemoryStorage.csproj" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
