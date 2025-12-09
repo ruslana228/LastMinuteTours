@@ -1,4 +1,5 @@
 ﻿using DataGridViewProject.Forms;
+using DatabaseStorage;
 using Manager;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -13,9 +14,13 @@ namespace DataGridViewProject
         [STAThread]
         static void Main()
         {
-            // Настройка Serilog для логирования в файл
-            Log.Logger = new LoggerConfiguration()
+            // Создаем хранилище базы данных
+            var storage = new TourDatabaseStorage();
+
+            // Настройка Serilog
+            var serilogger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
+                .Enrich.FromLogContext()
                 .WriteTo.Debug()
                 .WriteTo.File("logs/tour-manager-.log",
                     rollingInterval: RollingInterval.Day,
@@ -24,38 +29,15 @@ namespace DataGridViewProject
                     apiKey: "56XFeiZz8fsIEahlmmt8")
                 .CreateLogger();
 
-            try
-            {
-                Log.Information("Запуск приложения");
+            // Создаем фабрику логгеров и подключаем Serilog
+            var loggerFactory = new LoggerFactory()
+                .AddSerilog(serilogger);
 
-                ApplicationConfiguration.Initialize();
+            // Создаем менеджер туров
+            var tourManager = new TourManager(storage, loggerFactory.CreateLogger<TourManager>());
 
-                // Создаем фабрику логгеров с Serilog
-                using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-                {
-                    builder.AddSerilog(); // Подключаем Serilog как провайдер
-                });
-
-                // Создаем логгер для TourManager через фабрику
-                ILogger<TourManager> logger = loggerFactory.CreateLogger<TourManager>();
-
-                // Создаем зависимости вручную
-                var storage = new MemoryStorage.InMemoryTourStorage();
-                var tourManager = new TourManager(storage, logger);
-                var mainForm = new MainForm(tourManager);
-
-                Application.Run(mainForm);
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Application terminated unexpectedly");
-                MessageBox.Show($"Произошла критическая ошибка: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm(tourManager));
         }
     }
 }
