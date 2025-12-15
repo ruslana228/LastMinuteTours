@@ -101,6 +101,7 @@ namespace DataGridViewProject.Web.Controllers
                 // Устанавливаем текущую дату по умолчанию
                 DepartureDate = DateOnly.FromDateTime(DateTime.Today)
             };
+
             return View(model);
         }
 
