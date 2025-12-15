@@ -1,7 +1,14 @@
+﻿using DatabaseStorage;
+using Manager;
+using Manager.Contracts;
+using MemoryStorage.Contracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ITourStorage, TourDatabaseStorage>();
+builder.Services.AddScoped<ITourManager, TourManager>();
 
 var app = builder.Build();
 
