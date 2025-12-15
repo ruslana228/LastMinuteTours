@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryStorage", "Services\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryStorage.Contracts", "Services.Contracts\MemoryStorage.Contracts.csproj", "{047A71C7-843C-5F16-70D8-73FE3E4AF46C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseStorage", "DatabaseStorage\DatabaseStorage.csproj", "{85A910F7-A873-47E5-B1C9-B5110BC05BE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{047A71C7-843C-5F16-70D8-73FE3E4AF46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{047A71C7-843C-5F16-70D8-73FE3E4AF46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{047A71C7-843C-5F16-70D8-73FE3E4AF46C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85A910F7-A873-47E5-B1C9-B5110BC05BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85A910F7-A873-47E5-B1C9-B5110BC05BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85A910F7-A873-47E5-B1C9-B5110BC05BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85A910F7-A873-47E5-B1C9-B5110BC05BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{6CCF9E74-920E-49B9-A8ED-98B454296290} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{A9E8F547-365E-7CB2-80C6-59488E121BB2} = {0A1A92EF-2866-4D3C-9D78-5CCECB876D56}
 		{047A71C7-843C-5F16-70D8-73FE3E4AF46C} = {0A1A92EF-2866-4D3C-9D78-5CCECB876D56}
+		{85A910F7-A873-47E5-B1C9-B5110BC05BE2} = {0A1A92EF-2866-4D3C-9D78-5CCECB876D56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F336F09-3DF1-464F-BA08-83CD91976037}
