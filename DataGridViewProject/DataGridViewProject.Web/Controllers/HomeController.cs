@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Manager.Contracts;
 using Entities.Models;
+using System.Threading;
 
 namespace DataGridViewProject.Web.Controllers
 {
@@ -21,10 +22,10 @@ namespace DataGridViewProject.Web.Controllers
         /// <summary>
         /// Отображает главную страницу со списком туров и статистикой
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var tours = await tourManager.GetAll();
-            var statistics = await tourManager.GetStatistics();
+            var tours = await tourManager.GetAll(cancellationToken);
+            var statistics = await tourManager.GetStatistics(cancellationToken);
 
             var model = new IndexViewModel
             {
@@ -39,9 +40,9 @@ namespace DataGridViewProject.Web.Controllers
         /// Отображает страницу подтверждения удаления выбранного тура
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var tour = await tourManager.GetById(id);
+            var tour = await tourManager.GetById(id, cancellationToken);
             if (tour == null)
             {
                 return NotFound();
@@ -54,9 +55,9 @@ namespace DataGridViewProject.Web.Controllers
         /// Выполняет удаление тура после подтверждения пользователем
         /// </summary>
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken cancellationToken)
         {
-            await tourManager.Delete(id);
+            await tourManager.Delete(id, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
@@ -64,9 +65,9 @@ namespace DataGridViewProject.Web.Controllers
         /// Отображает форму редактирования выбранного тура
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken)
         {
-            var tour = await tourManager.GetById(id);
+            var tour = await tourManager.GetById(id, cancellationToken);
             if (tour == null)
             {
                 return NotFound();
@@ -79,14 +80,14 @@ namespace DataGridViewProject.Web.Controllers
         /// Принимает изменения тура из формы и сохраняет их
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Edit(TourModel model)
+        public async Task<IActionResult> Edit(TourModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            await tourManager.Update(model);
+            await tourManager.Update(model, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
@@ -109,14 +110,14 @@ namespace DataGridViewProject.Web.Controllers
         /// Принимает данные нового тура из формы и добавляет его в хранилище
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Create(TourModel model)
+        public async Task<IActionResult> Create(TourModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            await tourManager.Add(model);
+            await tourManager.Add(model, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
