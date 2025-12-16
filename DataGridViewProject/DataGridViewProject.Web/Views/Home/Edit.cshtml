@@ -1,0 +1,73 @@
+﻿@using Entities.Models
+@model Entities.Models.TourModel
+
+@{
+    ViewData["Title"] = "Редактирование тура";
+}
+
+<h1>Редактирование тура</h1>
+
+<form asp-action="Edit" method="post">
+    @* скрытое поле Id *@
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Direction" class="form-label">Направление</label>
+        <select asp-for="Direction"
+                asp-items="Html.GetEnumSelectList<Direction>()"
+                class="form-select">
+            <option value="">-- Выберите направление --</option>
+        </select>
+        <span asp-validation-for="Direction" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DepartureDate" class="form-label">Дата вылета</label>
+        <input asp-for="DepartureDate" class="form-control" type="date" />
+        <span asp-validation-for="DepartureDate" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="NumberNights" class="form-label">Количество ночей</label>
+                <input asp-for="NumberNights" class="form-control" />
+                <span asp-validation-for="NumberNights" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="NumberVacationers" class="form-label">Количество отдыхающих</label>
+                <input asp-for="NumberVacationers" class="form-control" />
+                <span asp-validation-for="NumberVacationers" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="CostPerVacationer" class="form-label">Цена за отдыхающего</label>
+                @Html.EditorFor(model => model.CostPerVacationer, new { htmlAttributes = new { @class = "form-control" } })
+                <span asp-validation-for="CostPerVacationer" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="Surcharges" class="form-label">Доплаты</label>
+                @Html.EditorFor(model => model.Surcharges, new { htmlAttributes = new { @class = "form-control" } })
+                <span asp-validation-for="Surcharges" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check">
+            <input asp-for="AvailabilityWiFi" class="form-check-input" />
+            <label asp-for="AvailabilityWiFi" class="form-check-label">Наличие Wi-Fi</label>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+</form>

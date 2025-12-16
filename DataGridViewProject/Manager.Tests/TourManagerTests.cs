@@ -17,7 +17,7 @@ namespace Manager.Tests
         private readonly ITourManager tourManager;
         private readonly Mock<ITourStorage> storageMock;
         private readonly Mock<ILogger<TourManager>> loggerMock;
-        private readonly CancellationToken ct = CancellationToken.None;
+        private readonly CancellationToken cancellationToken = CancellationToken.None;
 
         /// <summary>
         /// Инициализирует экземпляр <see cref="TourManagerTests"/>
@@ -40,15 +40,15 @@ namespace Manager.Tests
             var tour2 = TestEntityProvider.Shared.Create<TourModel>();
             var expectedTours = new List<TourModel> { tour1, tour2 };
 
-            storageMock.Setup(x => x.GetAll(ct))
+            storageMock.Setup(x => x.GetAll(cancellationToken))
                 .ReturnsAsync(expectedTours);
 
             // Act
-            var result = await tourManager.GetAll(ct);
+            var result = await tourManager.GetAll(cancellationToken);
 
             // Assert
             result.Should().BeEquivalentTo(expectedTours);
-            storageMock.Verify(x => x.GetAll(ct), Times.Once);
+            storageMock.Verify(x => x.GetAll(cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -59,16 +59,16 @@ namespace Manager.Tests
         {
             // Arrange
             var expectedTour = TestEntityProvider.Shared.Create<TourModel>();
-            storageMock.Setup(x => x.GetById(expectedTour.Id, ct))
+            storageMock.Setup(x => x.GetById(expectedTour.Id, cancellationToken))
                 .ReturnsAsync(expectedTour);
 
             // Act
-            var result = await tourManager.GetById(expectedTour.Id, ct);
+            var result = await tourManager.GetById(expectedTour.Id, cancellationToken);
 
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(expectedTour.Id);
-            storageMock.Verify(x => x.GetById(expectedTour.Id, ct), Times.Once);
+            storageMock.Verify(x => x.GetById(expectedTour.Id, cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -81,10 +81,10 @@ namespace Manager.Tests
             var tour = TestEntityProvider.Shared.Create<TourModel>();
 
             // Act
-            await tourManager.Add(tour, ct);
+            await tourManager.Add(tour, cancellationToken);
 
             // Assert
-            storageMock.Verify(x => x.Add(tour, ct), Times.Once);
+            storageMock.Verify(x => x.Add(tour, cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -97,10 +97,10 @@ namespace Manager.Tests
             var tour = TestEntityProvider.Shared.Create<TourModel>();
 
             // Act
-            await tourManager.Update(tour, ct);
+            await tourManager.Update(tour, cancellationToken);
 
             // Assert
-            storageMock.Verify(x => x.Update(tour, ct), Times.Once);
+            storageMock.Verify(x => x.Update(tour, cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace Manager.Tests
             var tourId = Guid.NewGuid();
 
             // Act
-            await tourManager.Delete(tourId, ct);
+            await tourManager.Delete(tourId, cancellationToken);
 
             // Assert
-            storageMock.Verify(x => x.Delete(tourId, ct), Times.Once);
+            storageMock.Verify(x => x.Delete(tourId, cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -141,10 +141,10 @@ namespace Manager.Tests
             });
 
             var tours = new List<TourModel> { tour1, tour2 }.AsReadOnly();
-            storageMock.Setup(x => x.GetAll(ct)).ReturnsAsync(tours);
+            storageMock.Setup(x => x.GetAll(cancellationToken)).ReturnsAsync(tours);
 
             // Act
-            var result = await tourManager.GetStatistics(ct);
+            var result = await tourManager.GetStatistics(cancellationToken);
 
             // Assert
             result.Should().NotBeNull();
@@ -153,7 +153,7 @@ namespace Manager.Tests
             result.ToursWithSurchargesCount.Should().Be(2);
             result.TotalSurcharges.Should().Be(1500m);
 
-            storageMock.Verify(x => x.GetAll(ct), Times.Once);
+            storageMock.Verify(x => x.GetAll(cancellationToken), Times.Once);
         }
 
         /// <summary>
@@ -164,10 +164,10 @@ namespace Manager.Tests
         {
             // Arrange
             var tours = new List<TourModel>().AsReadOnly();
-            storageMock.Setup(x => x.GetAll(ct)).ReturnsAsync(tours);
+            storageMock.Setup(x => x.GetAll(cancellationToken)).ReturnsAsync(tours);
 
             // Act
-            await tourManager.GetAll(ct);
+            await tourManager.GetAll(cancellationToken);
 
             // Assert
             // Проверяем, что был вызов LogDebug с сообщением о времени выполнения

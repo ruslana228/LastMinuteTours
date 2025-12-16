@@ -12,7 +12,7 @@ namespace DatabaseStorage
         /// <summary>
         /// Добавляет новый тур в базу данных.
         /// </summary>
-        public async Task Add(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Add(TourModel tour, CancellationToken cancellationToken)
         {
             using var database = new TourDatabaseContext();
             database.Tours.Add(tour);
@@ -22,7 +22,7 @@ namespace DatabaseStorage
         /// <summary>
         /// Возвращает все туры из базы данных.
         /// </summary>
-        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken)
         {
             using var database = new TourDatabaseContext();
             var tours = await database.Tours.AsNoTracking().ToListAsync(cancellationToken);
@@ -32,7 +32,7 @@ namespace DatabaseStorage
         /// <summary>
         /// Возвращает тур по его уникальному идентификатору.
         /// </summary>
-        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken)
         {
             using var database = new TourDatabaseContext();
             var tour = await database.Tours
@@ -44,7 +44,7 @@ namespace DatabaseStorage
         /// <summary>
         /// Обновляет существующий тур в базе данных.
         /// </summary>
-        public async Task Update(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Update(TourModel tour, CancellationToken cancellationToken)
         {
             using var database = new TourDatabaseContext();
             database.Tours.Update(tour);
@@ -54,7 +54,7 @@ namespace DatabaseStorage
         /// <summary>
         /// Удаляет тур из базы данных по его идентификатору.
         /// </summary>
-        public async Task Delete(Guid id, CancellationToken cancellationToken = default)
+        public async Task Delete(Guid id, CancellationToken cancellationToken)
         {
             using var database = new TourDatabaseContext();
             var tour = await database.Tours

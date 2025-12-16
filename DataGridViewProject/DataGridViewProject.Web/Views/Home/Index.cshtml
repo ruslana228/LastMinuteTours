@@ -1,0 +1,140 @@
+﻿@model DataGridViewProject.Web.Models.IndexViewModel
+
+@{
+    ViewData["Title"] = "Управление турами";
+}
+
+<div class="container mt-4">
+    <h1>Управление турами</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <a asp-action="Create" class="btn btn-primary">Добавить новый тур</a>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Статистика</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Всего туров</h6>
+                        <h3>@Model.Statistics.TotalToursCount</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Общая стоимость</h6>
+                        <h3>@Model.Statistics.TotalCostAllTours.ToString("C")</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Туры с доплатами</h6>
+                        <h3>@Model.Statistics.ToursWithSurchargesCount</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Всего доплат</h6>
+                        <h3>@Model.Statistics.TotalSurcharges.ToString("C")</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица туров -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Список туров</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Направление</th>
+                        <th>Дата вылета</th>
+                        <th>Ночей</th>
+                        <th>Отдыхающих</th>
+                        <th>Стоимость за чел.</th>
+                        <th>Wi-Fi</th>
+                        <th>Доплаты</th>
+                        <th>Общая стоимость</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tours)
+                    {
+                        <tr>
+                            <td>@item.Direction</td>
+                            <td>@item.DepartureDate.ToString("dd.MM.yyyy")</td>
+                            <td>@item.NumberNights</td>
+                            <td>@item.NumberVacationers</td>
+                            <td>@item.CostPerVacationer.ToString("C")</td>
+                            <td>@(item.AvailabilityWiFi ? "Да" : "Нет")</td>
+                            <td>@item.Surcharges.ToString("C")</td>
+                            <td>@((item.CostPerVacationer * item.NumberVacationers + item.Surcharges).ToString("C"))</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Редактировать</a>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal" data-tour-id="@item.Id"
+                                            data-tour-direction="@item.Direction">
+                                        Удалить
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно удаления -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите удалить тур в направлении <strong id="tour-direction"></strong>?</p>
+                <p>Это действие нельзя отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Обработка модального окна удаления
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var tourId = button.data('tour-id');
+            var tourDirection = button.data('tour-direction');
+
+            // Обновляем информацию в модальном окне
+            $('#tour-direction').text(tourDirection);
+
+            // Устанавливаем action формы
+            var form = $('#deleteForm');
+            form.attr('action', '@Url.Action("Delete", "Home")/' + tourId);
+        });
+    </script>
+}
