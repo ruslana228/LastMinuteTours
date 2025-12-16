@@ -21,7 +21,7 @@ namespace Manager
         /// <summary>
         /// Возврат списка всех туров
         /// </summary>
-        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -44,7 +44,7 @@ namespace Manager
         /// <summary>
         /// Возврат тура по его идентификатору
         /// </summary>
-        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -67,7 +67,7 @@ namespace Manager
         /// <summary>
         /// Добавление нового тура в список
         /// </summary>
-        public async Task Add(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Add(TourModel tour, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -89,7 +89,7 @@ namespace Manager
         /// <summary>
         /// Метод для обновления существующего тура в списке по его идентификатору
         /// </summary>
-        public async Task Update(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Update(TourModel tour, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -111,7 +111,7 @@ namespace Manager
         /// <summary>
         /// Метод для удаления тура из списка по его идентификатору
         /// </summary>
-        public async Task Delete(Guid id, CancellationToken cancellationToken = default)
+        public async Task Delete(Guid id, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -133,7 +133,7 @@ namespace Manager
         /// <summary>
         /// Возвращает статистику по всем турам
         /// </summary>
-        public async Task<TourStatistics> GetStatistics(CancellationToken cancellationToken = default)
+        public async Task<TourStatistics> GetStatistics(CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try

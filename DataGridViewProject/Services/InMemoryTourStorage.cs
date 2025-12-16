@@ -21,19 +21,19 @@ namespace MemoryStorage
         /// <summary>
         /// Возврат списка всех туров
         /// </summary>
-        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken = default) 
+        public async Task<IReadOnlyCollection<TourModel>> GetAll(CancellationToken cancellationToken) 
             => await Task.FromResult<IReadOnlyCollection<TourModel>>(items.AsReadOnly());
 
         /// <summary>
         /// Возврат тура по его идентификатору
         /// </summary>
-        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken = default) 
+        public async Task<TourModel?> GetById(Guid id, CancellationToken cancellationToken) 
             => await Task.FromResult(items.FirstOrDefault(t => t.Id == id));
 
         /// <summary>
         /// Добавление нового тура в список
         /// </summary>
-        public async Task Add(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Add(TourModel tour, CancellationToken cancellationToken)
         {
             items.Add(tour);
             await Task.CompletedTask;
@@ -42,7 +42,7 @@ namespace MemoryStorage
         /// <summary>
         /// Метод для обновления существующего тура в списке по его идентификатору
         /// </summary>
-        public async Task Update(TourModel tour, CancellationToken cancellationToken = default)
+        public async Task Update(TourModel tour, CancellationToken cancellationToken)
         {
             var existingTour = items.FirstOrDefault(t => t.Id == tour.Id);
 
@@ -65,7 +65,7 @@ namespace MemoryStorage
         /// <summary>
         /// Метод для удаления тура из списка по его идентификатору
         /// </summary>
-        public async Task Delete(Guid id, CancellationToken cancellationToken = default)
+        public async Task Delete(Guid id, CancellationToken cancellationToken)
         {
             var existingTour = items.FirstOrDefault(t => t.Id == id);
 
